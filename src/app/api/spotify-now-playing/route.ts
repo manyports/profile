@@ -32,32 +32,42 @@ const getNowPlaying = async () => {
     headers: {
       Authorization: `Bearer ${access_token}`,
     },
+    cache: "no-store",
   });
 };
 
 export async function GET() {
-  const response = await getNowPlaying();
+  try {
+    const response = await getNowPlaying();
 
-  if (response.status === 204 || response.status > 400) {
-    return NextResponse.json({ isPlaying: false });
+    if (response.status === 204 || response.status > 400) {
+      return NextResponse.json({ isPlaying: false });
+    }
+
+    const song = await response.json();
+    const isPlaying = song.is_playing;
+    const title = song.item.name;
+    const artist = song.item.artists
+      .map((_artist: { name: string }) => _artist.name)
+      .join(", ");
+    const album = song.item.album.name;
+    const albumImageUrl = song.item.album.images[0].url;
+    const songUrl = song.item.external_urls.spotify;
+
+    return NextResponse.json({
+      isPlaying,
+      title,
+      artist,
+      album,
+      albumImageUrl,
+      songUrl,
+      timestamp: new Date().toISOString(), 
+    });
+  } catch (error) {
+    console.error("Error fetching now playing:", error);
+    return NextResponse.json(
+      { error: "Failed to fetch now playing data" },
+      { status: 500 }
+    );
   }
-
-  const song = await response.json();
-  const isPlaying = song.is_playing;
-  const title = song.item.name;
-  const artist = song.item.artists
-    .map((_artist: { name: string }) => _artist.name)
-    .join(", ");
-  const album = song.item.album.name;
-  const albumImageUrl = song.item.album.images[0].url;
-  const songUrl = song.item.external_urls.spotify;
-
-  return NextResponse.json({
-    isPlaying,
-    title,
-    artist,
-    album,
-    albumImageUrl,
-    songUrl,
-  });
 }

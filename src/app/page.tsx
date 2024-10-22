@@ -21,18 +21,18 @@ import { Textarea } from "@/components/ui/textarea";
 import { AnimatePresence, motion } from "framer-motion";
 import {
   Code,
+  Coffee,
   Github,
   Mail,
   Moon,
+  Music,
   Send,
   Smile,
   Sparkles,
   Sun,
-  Music,
-  Coffee,
   Zap,
 } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 
 const interests = [
   { emoji: "🎹", text: "piano" },
@@ -93,6 +93,7 @@ export default function ProfilePage() {
   const [currentTime, setCurrentTime] = useState(new Date());
   const [activeTab, setActiveTab] = useState("about");
   const [currentSong, setCurrentSong] = useState({ title: "", artist: "" });
+  const [lastFetchTime, setLastFetchTime] = useState(0);
 
   useEffect(() => {
     setMounted(true);
@@ -106,24 +107,28 @@ export default function ProfilePage() {
     }
   }, [theme, mounted]);
 
-  useEffect(() => {
-    const fetchCurrentSong = async () => {
-      try {
-        const response = await fetch('/api/spotify-now-playing');
-        if (response.ok) {
-          const data = await response.json();
-          setCurrentSong({ title: data.title, artist: data.artist });
-        }
-      } catch (error) {
-        console.error('Error fetching current song:', error);
-      }
-    };
+  const fetchCurrentSong = useCallback(async () => {
+    const now = Date.now();
+    if (now - lastFetchTime < 10000) return; 
 
+    try {
+      const response = await fetch("/api/spotify-now-playing");
+      if (response.ok) {
+        const data = await response.json();
+        setCurrentSong({ title: data.title, artist: data.artist });
+        setLastFetchTime(now);
+      }
+    } catch (error) {
+      console.error("Error fetching current song:", error);
+    }
+  }, [lastFetchTime]);
+
+  useEffect(() => {
     fetchCurrentSong();
-    const interval = setInterval(fetchCurrentSong, 30000); 
+    const interval = setInterval(fetchCurrentSong, 10000); 
 
     return () => clearInterval(interval);
-  }, []);
+  }, [fetchCurrentSong]);
 
   if (!mounted) return null;
 
@@ -221,10 +226,14 @@ export default function ProfilePage() {
                       {currentSong.title ? (
                         <>
                           <p className="font-semibold">{currentSong.title}</p>
-                          <p className="text-sm text-muted-foreground">{currentSong.artist}</p>
+                          <p className="text-sm text-muted-foreground">
+                            {currentSong.artist}
+                          </p>
                         </>
                       ) : (
-                        <p className="text-sm text-muted-foreground">Not playing</p>
+                        <p className="text-sm text-muted-foreground">
+                          Not playing
+                        </p>
                       )}
                     </div>
                   </div>
@@ -277,7 +286,7 @@ export default function ProfilePage() {
                         className="bg-primary h-2 rounded-full"
                         initial={{ width: 0 }}
                         animate={{ width: `${skill.level}%` }}
-                        transition={{ delay: (index * 0.1) + 0.5, duration: 0.5 }}
+                        transition={{ delay: index * 0.1 + 0.5, duration: 0.5 }}
                       />
                     </div>
                   </motion.div>
