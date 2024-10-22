@@ -1,101 +1,309 @@
-import Image from "next/image";
+"use client";
 
-export default function Home() {
+import { Button } from "@/components/ui/button";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Textarea } from "@/components/ui/textarea";
+import { AnimatePresence, motion } from "framer-motion";
+import {
+  Code,
+  Github,
+  Mail,
+  Moon,
+  Send,
+  Smile,
+  Sparkles,
+  Sun,
+  Music,
+  Coffee,
+  Zap,
+} from "lucide-react";
+import { useEffect, useState } from "react";
+
+const interests = [
+  { emoji: "🎹", text: "piano" },
+  { emoji: "😎", text: "lana del rey" },
+  { emoji: "💻", text: "web development" },
+];
+
+const socials = [
+  {
+    icon: <Github className="h-4 w-4" />,
+    text: "GitHub",
+    href: "https://github.com/manyports/",
+  },
+  {
+    icon: <Send className="h-4 w-4" />,
+    text: "Telegram",
+    href: "https://t.me/fractonal",
+  },
+  {
+    icon: <Mail className="h-4 w-4" />,
+    text: "Email",
+    href: "mailto:yeahrassyl@gmail.com",
+  },
+];
+
+const projects = [
+  {
+    name: "math12.studio",
+    description:
+      "AI-powered Web Math Tutor providing step-by-step solutions, NIS syllabus-aligned test generation, interactive chat support, and gamified learning experiences.",
+    href: "https://math12.studio",
+  },
+  {
+    name: "OnePorted",
+    description:
+      "An interactive website for the programming community in Kazakhstan. Includes code execution, lots of theory.",
+    href: "https://oneported.vercel.app",
+  },
+  {
+    name: "0dana",
+    description: "An AI powered website for the Karagandy library.",
+    href: "https://0dana.vercel.app",
+  },
+];
+
+const customEmojis = ["😀", "😂", "👍", "❤️"];
+
+const skills = [
+  { name: "React", icon: <Code className="h-4 w-4" />, level: 90 },
+  { name: "Node.js", icon: <Zap className="h-4 w-4" />, level: 85 },
+  { name: "TypeScript", icon: <Coffee className="h-4 w-4" />, level: 80 },
+  { name: "Next.js", icon: <Sparkles className="h-4 w-4" />, level: 75 },
+];
+
+export default function ProfilePage() {
+  const [theme, setTheme] = useState("dark");
+  const [mounted, setMounted] = useState(false);
+  const [currentTime, setCurrentTime] = useState(new Date());
+  const [activeTab, setActiveTab] = useState("about");
+  const [currentSong, setCurrentSong] = useState({ title: "", artist: "" });
+
+  useEffect(() => {
+    setMounted(true);
+    const timer = setInterval(() => setCurrentTime(new Date()), 1000);
+    return () => clearInterval(timer);
+  }, []);
+
+  useEffect(() => {
+    if (mounted) {
+      document.documentElement.classList.toggle("dark", theme === "dark");
+    }
+  }, [theme, mounted]);
+
+  useEffect(() => {
+    const fetchCurrentSong = async () => {
+      try {
+        const response = await fetch('/api/spotify-now-playing');
+        if (response.ok) {
+          const data = await response.json();
+          setCurrentSong({ title: data.title, artist: data.artist });
+        }
+      } catch (error) {
+        console.error('Error fetching current song:', error);
+      }
+    };
+
+    fetchCurrentSong();
+    const interval = setInterval(fetchCurrentSong, 30000); 
+
+    return () => clearInterval(interval);
+  }, []);
+
+  if (!mounted) return null;
+
+  const toggleTheme = () => {
+    setTheme((prevTheme) => (prevTheme === "light" ? "dark" : "light"));
+  };
+
   return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-8 row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="https://nextjs.org/icons/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-semibold">
-              src/app/page.tsx
-            </code>
-            .
-          </li>
-          <li>Save and see your changes instantly.</li>
-        </ol>
-
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
+    <div className="min-h-screen bg-background text-foreground transition-colors duration-300 flex items-center justify-center p-4">
+      <Card className="w-full max-w-2xl">
+        <CardHeader className="space-y-1">
+          <div className="flex justify-between items-center">
+            <div>
+              <CardTitle className="text-3xl font-bold">Yerassyl</CardTitle>
+              <CardDescription className="text-xl">
+                Full-Stack Developer
+              </CardDescription>
+            </div>
+            <Button variant="ghost" size="icon" onClick={toggleTheme}>
+              {theme === "light" ? (
+                <Moon className="h-6 w-6" />
+              ) : (
+                <Sun className="h-6 w-6" />
+              )}
+            </Button>
+          </div>
+          <CardDescription>Welcome to my profile page!</CardDescription>
+        </CardHeader>
+        <CardContent>
+          <Tabs
+            value={activeTab}
+            onValueChange={setActiveTab}
+            className="w-full"
           >
-            <Image
-              className="dark:invert"
-              src="https://nextjs.org/icons/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:min-w-44"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
+            <TabsList className="grid w-full grid-cols-3">
+              <TabsTrigger value="about">About Me</TabsTrigger>
+              <TabsTrigger value="projects">Projects</TabsTrigger>
+              <TabsTrigger value="skills">Skills</TabsTrigger>
+            </TabsList>
+            <TabsContent value="about">
+              <div className="space-y-4">
+                <section>
+                  <h3 className="text-lg font-semibold mb-2">
+                    Current Interests:
+                  </h3>
+                  <div className="flex flex-wrap gap-2">
+                    {interests.map((interest, index) => (
+                      <motion.div
+                        key={index}
+                        className="flex items-center space-x-2 bg-secondary rounded-full px-3 py-1"
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ delay: index * 0.1 }}
+                      >
+                        <span className="text-xl">{interest.emoji}</span>
+                        <span>{interest.text}</span>
+                      </motion.div>
+                    ))}
+                  </div>
+                </section>
+                <section>
+                  <h3 className="text-lg font-semibold mb-2">Social:</h3>
+                  <div className="space-y-2">
+                    {socials.map((social, index) => (
+                      <motion.div
+                        key={index}
+                        initial={{ opacity: 0, x: -20 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        transition={{ delay: index * 0.1 }}
+                      >
+                        <Button
+                          variant="outline"
+                          className="w-full justify-center"
+                          asChild
+                        >
+                          <a
+                            href={social.href}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="inline-flex items-center space-x-2"
+                          >
+                            {social.icon}
+                            <span>{social.text}</span>
+                          </a>
+                        </Button>
+                      </motion.div>
+                    ))}
+                  </div>
+                </section>
+                <section>
+                  <h3 className="text-lg font-semibold mb-2">Now Playing:</h3>
+                  <div className="flex items-center space-x-2 bg-secondary rounded-lg p-3">
+                    <Music className="h-6 w-6" />
+                    <div>
+                      {currentSong.title ? (
+                        <>
+                          <p className="font-semibold">{currentSong.title}</p>
+                          <p className="text-sm text-muted-foreground">{currentSong.artist}</p>
+                        </>
+                      ) : (
+                        <p className="text-sm text-muted-foreground">Not playing</p>
+                      )}
+                    </div>
+                  </div>
+                </section>
+              </div>
+            </TabsContent>
+            <TabsContent value="projects">
+              <div className="space-y-4">
+                <h3 className="text-lg font-semibold mb-2">My Projects:</h3>
+                {projects.map((project, index) => (
+                  <motion.div
+                    key={index}
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: index * 0.1 }}
+                  >
+                    <Card>
+                      <CardHeader>
+                        <CardTitle>
+                          <a
+                            href={project.href}
+                            className="hover:underline cursor-pointer"
+                          >
+                            {project.name}
+                          </a>
+                        </CardTitle>
+                        <CardDescription>{project.description}</CardDescription>
+                      </CardHeader>
+                    </Card>
+                  </motion.div>
+                ))}
+              </div>
+            </TabsContent>
+            <TabsContent value="skills">
+              <div className="space-y-4">
+                <h3 className="text-lg font-semibold mb-2">My Skills:</h3>
+                {skills.map((skill, index) => (
+                  <motion.div
+                    key={index}
+                    initial={{ opacity: 0, width: 0 }}
+                    animate={{ opacity: 1, width: "100%" }}
+                    transition={{ delay: index * 0.1, duration: 0.5 }}
+                  >
+                    <div className="flex items-center space-x-2 mb-1">
+                      {skill.icon}
+                      <span>{skill.name}</span>
+                    </div>
+                    <div className="bg-secondary rounded-full h-2">
+                      <motion.div
+                        className="bg-primary h-2 rounded-full"
+                        initial={{ width: 0 }}
+                        animate={{ width: `${skill.level}%` }}
+                        transition={{ delay: (index * 0.1) + 0.5, duration: 0.5 }}
+                      />
+                    </div>
+                  </motion.div>
+                ))}
+              </div>
+            </TabsContent>
+          </Tabs>
+        </CardContent>
+        <CardFooter className="flex justify-between items-center">
+          <p className="text-sm text-muted-foreground">
+            Current time: {currentTime.toLocaleTimeString()}
+          </p>
+          <motion.div
+            animate={{ rotate: 360 }}
+            transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
           >
-            Read our docs
-          </a>
-        </div>
-      </main>
-      <footer className="row-start-3 flex gap-6 flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="https://nextjs.org/icons/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="https://nextjs.org/icons/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="https://nextjs.org/icons/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
+            {activeTab === "about" ? (
+              <Code className="h-6 w-6" />
+            ) : activeTab === "projects" ? (
+              <Sparkles className="h-6 w-6" />
+            ) : (
+              <Zap className="h-6 w-6" />
+            )}
+          </motion.div>
+        </CardFooter>
+      </Card>
     </div>
   );
 }
