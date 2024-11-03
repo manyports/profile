@@ -109,7 +109,7 @@ export default function ProfilePage() {
 
   const fetchCurrentSong = useCallback(async () => {
     const now = Date.now();
-    if (now - lastFetchTime < 10000) return; 
+    if (now - lastFetchTime < 360000) return; 
 
     try {
       const response = await fetch("/api/spotify-now-playing");

@@ -61,7 +61,7 @@ export async function GET() {
       album,
       albumImageUrl,
       songUrl,
-      timestamp: new Date().toISOString(), 
+      timestamp: new Date().toISOString(),
     });
   } catch (error) {
     console.error("Error fetching now playing:", error);
