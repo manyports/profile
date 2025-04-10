@@ -31,7 +31,7 @@ export const data = {
           title: "Law & Code Hackathon Winner (I place 🥇)",
           company: "Terricon Valley",
           description: "Built a web app & a mobile app for the ministry of internal affairs of Kazakhstan.",
-          location: "Almaty",
+          location: "Karaganda",
         },
       ],
       student: [
