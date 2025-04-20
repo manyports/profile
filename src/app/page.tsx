@@ -8,6 +8,23 @@ import ContactSection from "@/components/sections/contact-section"
 import CVViewer from "@/components/cv-viewer"
 import { data } from "@/data"
 import { Home, Briefcase, GraduationCap, FolderGit2, Cloud, CloudDrizzle, Sun, Code, Calendar, Clock, Award, Gauge } from 'lucide-react'
+import { 
+  Button, 
+  PageTitle, 
+  SectionHeader, 
+  Card, 
+  CardContent, 
+  CardImage, 
+  CardTitle, 
+  CardDescription,
+  Badge,
+  Grid, 
+  GridItem,
+  Container,
+  Spacer,
+  StatusBadge,
+  DynamicIsland
+} from "@/components/ui"
 
 type Section = "software" | "student" | "projects"
 
@@ -31,118 +48,171 @@ export default function HomePage() {
     { icon: FolderGit2, label: "Projects", onClick: () => setActiveSection("projects") },
   ]
 
+  const dynamicIslandItems = navigationItems.map(item => ({
+    ...item,
+    isActive: 
+      (activeSection === "software" && item.label === "Software Engineer") ||
+      (activeSection === "student" && item.label === "Student @ NIS") ||
+      (activeSection === "projects" && item.label === "Projects") ||
+      (activeSection === null && item.label === "Home")
+  }))
+
   const HomeScreen = () => (
     <motion.div 
-      className="space-y-24"
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.5 }}
+      className="space-y-28"
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
     >
+      <Grid columns={1} mdColumns={12} gap={16}>
+        <GridItem colSpan={1} mdColSpan={8} className="space-y-6">
+          <motion.h2 
+            className="text-3xl md:text-4xl font-medium leading-tight"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+          >
+            Software engineer & developer focused on building exceptional digital experiences.
+          </motion.h2>
+          
+          <motion.p
+            className="text-neutral-400 text-lg leading-relaxed max-w-2xl"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.7, delay: 0.1, ease: [0.22, 1, 0.36, 1] }}
+          >
+            Currently studying computer science in Kazakhstan. Building modern web apps with React, Next.js, TypeScript, and AI technologies.
+          </motion.p>
+        </GridItem>
+      </Grid>
+
       <motion.div 
-        className="space-y-8"
-        initial={{ opacity: 0, y: 10 }}
+        className="space-y-10"
+        initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.1 }}
+        transition={{ duration: 0.7, delay: 0.2, ease: [0.22, 1, 0.36, 1] }}
       >
-        <div className="flex items-center justify-between">
-          <h2 className="text-2xl sm:text-3xl font-medium tracking-tight">Featured Project</h2>
-          <FolderGit2 className="text-neutral-400" size={24} />
-        </div>
-        <div className="bg-neutral-900/30 rounded-xl overflow-hidden">
-          <div className="relative overflow-hidden">
-            <img
-              src="/featured-project.png" 
-              alt="Featured project screenshot"
-              className="w-full h-auto object-cover"
-              loading="eager"
-            />
-          </div>
-          <div className="p-6">
-            <h3 className="text-xl font-medium mb-2">Math12.studio</h3>
-            <p className="text-neutral-400 mb-4">An AI-powered web app designed to help students build confidence and excel in math. With a focus on the Kazakhstani syllabus, it combines cutting-edge AI with an interactive approach to make learning more accessible and engaging. The project was presented on nFactorial Incubator 2024 and has 9000+ users.</p>
+        <SectionHeader title="Featured Project" />
+        
+        <Card className="group">
+          <CardImage 
+            src="/featured-project.png" 
+            alt="Featured project screenshot"
+            className="aspect-video md:aspect-[16/7]"
+          />
+          <CardContent className="space-y-5">
+            <div className="space-y-2">
+              <div className="flex items-center justify-between">
+                <CardTitle>Math12.studio</CardTitle>
+                <div className="h-8 w-8 rounded-full bg-white/5 border border-white/10 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                  <motion.div 
+                    whileHover={{ rotate: 45 }}
+                    className="text-white"
+                  >
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></svg>
+                  </motion.div>
+                </div>
+              </div>
+              <CardDescription>
+                An AI-powered web app designed to help students build confidence and excel in math. With a focus on the Kazakhstani syllabus, it combines cutting-edge AI with an interactive approach to make learning more accessible and engaging. The project was presented on nFactorial Incubator 2024 and has 9000+ users.
+              </CardDescription>
+            </div>
+            
             <div className="flex flex-wrap gap-2">
-              {['Next.js', 'Tailwind CSS', 'Express.js', 'ChatGPT API', 'Gemini API', 'MongoDB', 'JWT'].map(tech => (
-                <span key={tech} className="text-xs bg-white/5 px-2 py-1 rounded-full">{tech}</span>
+              {['Next.js', 'Tailwind CSS', 'Express.js', 'ChatGPT API', 'Gemini API', 'MongoDB', 'JWT'].map((tech, index) => (
+                <Badge key={tech} index={index}>{tech}</Badge>
               ))}
             </div>
-          </div>
-        </div>
+          </CardContent>
+        </Card>
       </motion.div>
+      
       <motion.div 
-        className="space-y-8"
-        initial={{ opacity: 0, y: 10 }}
+        className="space-y-10"
+        initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.2 }}
+        transition={{ duration: 0.7, delay: 0.3, ease: [0.22, 1, 0.36, 1] }}
       >
-        <div className="flex items-center justify-between">
-          <h2 className="text-2xl sm:text-3xl font-medium tracking-tight">Skills & Expertise</h2>
-          <Code className="text-neutral-400" size={24} />
-        </div>
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+        <SectionHeader title="Skills & Expertise" />
+        
+        <Grid columns={1} mdColumns={4} gap={6}>
           {[
             { name: 'Frontend', skills: ['React', 'TypeScript', 'Next.js', 'TailwindCSS'] },
             { name: 'Backend', skills: ['Node.js', 'Express', 'MongoDB'] },
             { name: 'Design', skills: ['Figma', 'UI/UX', 'Responsive Design'] },
             { name: 'Tools', skills: ['Git', 'Docker'] }
           ].map((category, i) => (
-            <div key={i} className="space-y-3">
-              <h3 className="text-lg font-medium">{category.name}</h3>
-              <ul className="space-y-2">
+            <Card key={i} index={i} className="space-y-4 p-6">
+              <CardTitle className="text-lg">{category.name}</CardTitle>
+              <ul className="space-y-2.5">
                 {category.skills.map(skill => (
-                  <li key={skill} className="text-neutral-400 text-sm">• {skill}</li>
+                  <li key={skill} className="text-neutral-400 text-sm flex items-center gap-2">
+                    <div className="h-1 w-1 rounded-full bg-neutral-500"></div>
+                    {skill}
+                  </li>
                 ))}
               </ul>
-            </div>
+            </Card>
           ))}
-        </div>
+        </Grid>
       </motion.div>
 
       <motion.div 
-        className="space-y-8"
-        initial={{ opacity: 0, y: 10 }}
+        className="space-y-10"
+        initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.3 }}
+        transition={{ duration: 0.7, delay: 0.4, ease: [0.22, 1, 0.36, 1] }}
       >
-        <div className="flex items-center justify-between">
-          <h2 className="text-2xl sm:text-3xl font-medium tracking-tight">Current Status</h2>
-          <Gauge className="text-neutral-400" size={24} />
-        </div>
-        <div className="space-y-6">
-          <div className="flex justify-between items-center">
-            <div>
-              <p className="text-lg font-medium">Now</p>
-              <p className="text-neutral-400">Building next-gen web applications</p>
-            </div>
-            <div className="h-3 w-3 rounded-full bg-green-500 animate-pulse"></div>
-          </div>
-          <div className="flex justify-between items-center">
-            <div>
-              <p className="text-lg font-medium">Learning</p>
-              <p className="text-neutral-400">Advanced AI integration with web apps</p>
-            </div>
-            <div className="h-3 w-3 rounded-full bg-blue-500"></div>
-          </div>
-          <div className="flex justify-between items-center">
-            <div>
-              <p className="text-lg font-medium">Location</p>
-              <p className="text-neutral-400">Astana, Kazakhstan; Semey, Kazakhstan</p>
-            </div>
-            <div className="h-3 w-3 rounded-full bg-purple-500"></div>
-          </div>
-        </div>
+        <SectionHeader title="Current Status" />
+        
+        <Grid columns={1} mdColumns={3} gap={6}>
+          <Card>
+            <CardContent>
+              <div className="flex justify-between items-center">
+                <div className="space-y-1">
+                  <p className="text-lg font-medium">Now</p>
+                  <p className="text-neutral-400">Building next-gen web applications</p>
+                </div>
+                <StatusBadge color="green" />
+              </div>
+            </CardContent>
+          </Card>
+          
+          <Card index={1}>
+            <CardContent>
+              <div className="flex justify-between items-center">
+                <div className="space-y-1">
+                  <p className="text-lg font-medium">Learning</p>
+                  <p className="text-neutral-400">Advanced AI integration with web apps</p>
+                </div>
+                <StatusBadge color="blue" />
+              </div>
+            </CardContent>
+          </Card>
+          
+          <Card index={2}>
+            <CardContent>
+              <div className="flex justify-between items-center">
+                <div className="space-y-1">
+                  <p className="text-lg font-medium">Location</p>
+                  <p className="text-neutral-400">Astana, Kazakhstan; Semey, Kazakhstan</p>
+                </div>
+                <StatusBadge color="purple" />
+              </div>
+            </CardContent>
+          </Card>
+        </Grid>
       </motion.div>
 
       <motion.div 
-        className="space-y-8"
-        initial={{ opacity: 0, y: 10 }}
+        className="space-y-10"
+        initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.4 }}
+        transition={{ duration: 0.7, delay: 0.5, ease: [0.22, 1, 0.36, 1] }}
       >
-        <div className="flex items-center justify-between">
-          <h2 className="text-2xl sm:text-3xl font-medium tracking-tight">Latest Activity</h2>
-          <Calendar className="text-neutral-400" size={24} />
-        </div>
-        <div className="space-y-6">
+        <SectionHeader title="Latest Activity" />
+        
+        <div className="space-y-5">
           {[
             { 
               title: "Implemented Dynamic Island UI on my portfolio website",
@@ -160,11 +230,17 @@ export default function HomePage() {
               date: "Feb 2025"
             }
           ].map((post, i) => (
-            <div key={i} className="border-l-2 border-neutral-800 pl-4 space-y-1">
-              <h3 className="text-lg font-medium">{post.title}</h3>
-              <p className="text-neutral-400">{post.desc}</p>
-              <p className="text-sm text-neutral-500">{post.date}</p>
-            </div>
+            <Card key={i} index={i} className="group">
+              <CardContent>
+                <div className="flex justify-between">
+                  <div className="space-y-2">
+                    <h3 className="text-lg font-medium group-hover:text-white transition-colors">{post.title}</h3>
+                    <p className="text-neutral-400">{post.desc}</p>
+                  </div>
+                  <p className="text-sm text-neutral-500 shrink-0">{post.date}</p>
+                </div>
+              </CardContent>
+            </Card>
           ))}
         </div>
       </motion.div>
@@ -173,140 +249,21 @@ export default function HomePage() {
 
   return (
     <main className="min-h-screen bg-black text-white">
-      <div className="mx-auto max-w-[1400px] px-8 py-16 pb-32">
-        <div className="flex flex-col sm:flex-row justify-between items-start mb-16">
-          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.5 }}>
-            <h1 className="text-5xl md:text-6xl font-medium tracking-tight">Yerassyl Bazarbayev</h1>
-          </motion.div>
+      <Container className="py-16 pb-32">
+        <div className="flex flex-col sm:flex-row justify-between items-start mb-24">
+          <PageTitle>Yerassyl Bazarbayev</PageTitle>
 
-          <motion.button
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.5 }}
+          <Button 
+            variant="primary"
+            icon={
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"/><polyline points="14 2 14 8 20 8"/><line x1="16" x2="8" y1="13" y2="13"/><line x1="16" x2="8" y1="17" y2="17"/><line x1="10" x2="8" y1="9" y2="9"/></svg>
+            }
             onClick={() => setShowCV(true)}
-            className="mt-4 sm:mt-0 text-neutral-400 hover:text-white transition-colors"
+            className="mt-6 sm:mt-0"
           >
             View CV
-          </motion.button>
+          </Button>
         </div>
-
-        <motion.div 
-          className="fixed bottom-10 left-0 right-0 z-50 flex justify-center"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
-        >
-          <motion.div
-            className="backdrop-blur-xl bg-black/70 border border-white/5 shadow-[0_8px_30px_rgb(0,0,0,0.12)] rounded-[28px] overflow-hidden"
-            initial={{ y: 60, width: "auto" }}
-            animate={{ 
-              y: 0,
-              width: "auto",
-              transition: { 
-                y: { type: "spring", stiffness: 300, damping: 25 },
-                width: { duration: 0.5, ease: [0.32, 0.72, 0, 1] }
-              }
-            }}
-            whileHover={{ 
-              boxShadow: "0 8px 40px rgba(0,0,0,0.25), 0 0 0 1px rgba(255,255,255,0.08)",
-              y: -2,
-              transition: { duration: 0.2 }
-            }}
-          >
-            <motion.div 
-              className="px-3 py-3 flex items-center gap-1.5 relative"
-              layout
-            >
-              <div className="flex gap-1 mx-1">
-                {navigationItems.map((item, index) => {
-                  const isActive = 
-                    (activeSection === "software" && item.label === "Software Engineer") ||
-                    (activeSection === "student" && item.label === "Student @ NIS") ||
-                    (activeSection === "projects" && item.label === "Projects") ||
-                    (activeSection === null && item.label === "Home");
-                    
-                  return (
-                    <motion.button
-                      key={item.label}
-                      onClick={item.onClick}
-                      className={`relative group flex items-center rounded-2xl px-4 py-2.5 transition-colors ${
-                        isActive ? "text-white" : "text-neutral-400"
-                      }`}
-                      initial={{ opacity: 0, x: -5 }}
-                      animate={{ 
-                        opacity: 1,
-                        x: 0,
-                        transition: { 
-                          delay: index * 0.06,
-                          duration: 0.4,
-                          ease: [0.22, 1, 0.36, 1]
-                        }
-                      }}
-                      whileTap={{ scale: 0.95 }}
-                    >
-                      {isActive && (
-                        <motion.div
-                          layoutId="activeNavBackground"
-                          className="absolute inset-0 bg-white/[0.08] dark:bg-white/[0.08] rounded-2xl"
-                          initial={{ opacity: 0 }}
-                          animate={{ opacity: 1 }}
-                          exit={{ opacity: 0 }}
-                          transition={{ type: "spring", bounce: 0.15, duration: 0.5 }}
-                        />
-                      )}
-                      
-                      <div className="relative z-10 flex items-center gap-2.5">
-                        <motion.div
-                          initial={{ scale: 1 }}
-                          animate={{ scale: isActive ? 1.1 : 1 }}
-                          transition={{ type: "spring", stiffness: 500, damping: 30 }}
-                        >
-                          <item.icon size={20} strokeWidth={1.5} 
-                            className={`transition-colors ${isActive ? "text-white" : "text-neutral-400 group-hover:text-neutral-200"}`} 
-                          />
-                        </motion.div>
-                        
-                        <motion.span
-                          initial={{ opacity: 0, width: 0 }}
-                          animate={{ 
-                            opacity: isActive ? 1 : 0,
-                            width: isActive ? "auto" : 0
-                          }}
-                          transition={{ 
-                            duration: 0.3,
-                            ease: [0.32, 0.72, 0, 1]
-                          }}
-                          className="text-sm font-medium whitespace-nowrap overflow-hidden"
-                        >
-                          {item.label === "Home" ? "Home" : 
-                           item.label === "Software Engineer" ? "Engineer" : 
-                           item.label === "Student @ NIS" ? "Student" : "Projects"}
-                        </motion.span>
-                      </div>
-                    </motion.button>
-                  );
-                })}
-              </div>
-              
-              <motion.div 
-                className="absolute inset-0 pointer-events-none opacity-0"
-                animate={{ 
-                  opacity: [0, 0.03, 0],
-                  backgroundPosition: ["0% 0%", "100% 100%"]
-                }}
-                transition={{ 
-                  repeat: Infinity,
-                  duration: 5,
-                  ease: "linear"
-                }}
-                style={{ 
-                  background: "linear-gradient(45deg, transparent 25%, rgba(255,255,255,0.1) 50%, transparent 75%)",
-                  backgroundSize: "250% 250%"
-                }}
-              />
-            </motion.div>
-          </motion.div>
-        </motion.div>
 
         <AnimatePresence mode="wait">
           {activeSection && (
@@ -335,7 +292,9 @@ export default function HomePage() {
         {showCV && <CVViewer onClose={() => setShowCV(false)} />}
         
         <div className="h-16 md:h-20" />
-      </div>
+      </Container>
+
+      <DynamicIsland navigationItems={dynamicIslandItems} />
     </main>
   )
 }
