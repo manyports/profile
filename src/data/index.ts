@@ -161,6 +161,11 @@ export const data = {
     { id: "03", src: "https://o75qeyw8bv.ufs.sh/f/axRukMUCpSkAhBZ9ydaAUN6SEehKVLyG1YgWF4TXaQOc0rDt", caption: "Almaty's mountains", location: "Almaty", year: "2024" },
     { id: "04", src: "https://o75qeyw8bv.ufs.sh/f/axRukMUCpSkA8xFCPkmfNBRzAoXJD6pf4i2YaPKC7xmScyGk", caption: "A walk after working in a coffee shop", location: "Almaty", year: "2024" },
     { id: "05", src: "https://o75qeyw8bv.ufs.sh/f/axRukMUCpSkAx3FtWPXEGhBIKUa6oZiRQ5bCve0DWquEJmdM", caption: "Bye-bye, Almaty", location: "Almaty", year: "2024" },
-    { id: "06", src: "https://o75qeyw8bv.ufs.sh/f/axRukMUCpSkAwFofHhOKIGhcXZjroR1gtb8f3Ss0Wp7yY5lQ", caption: "N17R24's NIS students reunion", location: "Aktobe", year: "2024" },
+    { id: "06", src: "https://o75qeyw8bv.ufs.sh/f/axRukMUCpSkAwFofHhOKIGhcXZjroR1gtb8f3Ss0Wp7yY5lQ", caption: "N17R24's NIS students reunion (I'm in the center)", location: "Aktobe", year: "2025" },
+    { id: "07", src: "https://o75qeyw8bv.ufs.sh/f/axRukMUCpSkAL2D29iSVxGZ926wicMopUmzlyWnISBeFQsNA", caption: "Yet another image I took in Almaty", location: "Almaty", year: "2024" },
+    { id: "08", src: "https://o75qeyw8bv.ufs.sh/f/axRukMUCpSkADHdhEc8SftOCwAcIzGPqT90Qv4xXE38j5gYU", caption: "The daily route of mine during Incubator", location: "Almaty", year: "2024" },
+    { id: "09", src: "https://o75qeyw8bv.ufs.sh/f/axRukMUCpSkA6AaFRp0Gnf78RQlNUhrvaGF3YC2koey1DLXd", caption: "I'm NOT riding those scooters", location: "Almaty", year: "2024" },
+    { id: "10", src: "https://o75qeyw8bv.ufs.sh/f/axRukMUCpSkAZJbQWoVk0IcDKx13ounNvdOVqr8l2embYSAi", caption: "A lunch with Asselya's achievers", location: "Almaty", year: "2024" },
+    { id: "11", src: "https://o75qeyw8bv.ufs.sh/f/axRukMUCpSkAg6Yva4xOpvlUzG6Ei5B1AkfdMZSXa4H9LI0q", caption: "The grind during nFactorial Incubator", location: "Almaty", year: "2024" },
   ],
 }
