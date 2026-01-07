@@ -73,7 +73,7 @@ export function AboutPage() {
             <p className="text-[#999]">Honors</p>
             
             <div className="space-y-4">
-              {data.honors.slice(0, 6).map((honor) => (
+              {data.honors.map((honor) => (
                 <div key={honor.id} className="flex justify-between items-start gap-4">
                   <div>
                     <p className="font-medium">{honor.title}</p>
