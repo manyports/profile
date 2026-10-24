@@ -1,7 +1,9 @@
-export type Page = "home" | "work" | "about" | "photos" | "contact"
+export type Page = "projects" | "about" | "photos" | "contact"
 
-export interface DockItem {
-  id: Page
-  label: string
-  icon: string
+export interface Education {
+  id: string
+  school: string
+  location: string
+  period: string
+  major?: string
 }

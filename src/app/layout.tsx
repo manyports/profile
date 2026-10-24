@@ -16,6 +16,8 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   title: "Yerassyl Bazarbayev",
   description: "Software Engineer",
+  // agents that can't run the app find the full text here
+  alternates: { types: { "text/markdown": "/llms.txt" } },
 };
 
 export default function RootLayout({

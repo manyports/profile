@@ -1,33 +1,14 @@
-"use client"
+import ClientApp from "@/components/client-app"
+import { siteMarkdown } from "@/lib/llms"
 
-import { useState } from "react"
-import { motion, AnimatePresence } from "framer-motion"
-import { Page } from "@/types"
-import { Dock } from "@/components/dock"
-import { HomePage, WorkPage, AboutPage, PhotosPage, ContactPage } from "@/components/pages"
-
-export default function App() {
-  const [activePage, setActivePage] = useState<Page>("home")
-
+export default function Page() {
   return (
-    <main className="bg-white text-black font-[family-name:var(--font-geist-sans)]">
-      <AnimatePresence mode="wait">
-        <motion.div
-          key={activePage}
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
-          transition={{ duration: 0.3 }}
-        >
-          {activePage === "home" && <HomePage />}
-          {activePage === "work" && <WorkPage />}
-          {activePage === "about" && <AboutPage />}
-          {activePage === "photos" && <PhotosPage />}
-          {activePage === "contact" && <ContactPage />}
-        </motion.div>
-      </AnimatePresence>
-
-      <Dock activePage={activePage} setActivePage={setActivePage} />
-    </main>
+    <>
+      <ClientApp />
+      {/* never shown to people (they have JS); text extractors that skip scripts read this instead */}
+      <noscript>
+        <pre style={{ whiteSpace: "pre-wrap", padding: 24, fontFamily: "monospace" }}>{siteMarkdown()}</pre>
+      </noscript>
+    </>
   )
 }
