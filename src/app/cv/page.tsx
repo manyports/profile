@@ -47,7 +47,7 @@ function Entry({
   return (
     <div className="mb-3.5 print:mb-2.5 last:mb-0 break-inside-avoid">
       <div className="flex items-baseline justify-between gap-4">
-        <h3 className="font-semibold text-[13.5px] print:text-[12px]">{title}</h3>
+        <h3 className="min-w-0 [overflow-wrap:anywhere] font-semibold text-[13.5px] print:text-[12px]">{title}</h3>
         {when && <span className={`${mono} text-[10.5px] text-[#666] shrink-0 tabular-nums`}>{when}</span>}
       </div>
       {sub && <p className="text-[12px] print:text-[10.5px] text-[#555] mt-0.5 print:mt-0">{sub}</p>}
