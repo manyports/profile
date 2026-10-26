@@ -11,7 +11,10 @@ export const staggerVariants: Variants = {
 
 const itemVariants: Variants = {
   hidden: { opacity: 0, y: 14, filter: "blur(4px)" },
-  shown: { opacity: 1, y: 0, filter: "blur(0px)", transition: { duration: 0.5, ease } },
+  shown: { opacity: 1, y: 0, filter: "blur(0px)",
+    // a leftover blur(0px) still turns the whole section into one big filtered layer; drop it once settled
+    transitionEnd: { filter: "none" },
+    transition: { duration: 0.5, ease } },
 }
 
 export function Item({ children, className }: { children: React.ReactNode; className?: string }) {

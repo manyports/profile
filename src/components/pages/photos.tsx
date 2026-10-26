@@ -113,16 +113,23 @@ function Lightbox({
 
   return (
     <motion.div
-      initial={{ backgroundColor: "rgba(0,0,0,0)" }}
-      animate={{ backgroundColor: "rgba(0,0,0,1)" }}
-      exit={{ backgroundColor: "rgba(0,0,0,0)", transition: { duration: 0.6, ease: inOut, delay: 0.1 } }}
-      transition={{ duration: 0.5, ease: inOut }}
+      // the exit is driven by the backdrop below; this only holds the dialog until it finishes
+      exit={{ opacity: 1, transition: { duration: 0.7 } }}
       onClick={onClose}
       className="fixed inset-0 z-[70] flex flex-col text-white cursor-zoom-out"
       role="dialog"
       aria-modal
       aria-label={photo.caption}
     >
+      {/* fading a black layer's opacity stays on the GPU; animating background-color repaints the screen each frame */}
+      <motion.div
+        aria-hidden
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        exit={{ opacity: 0, transition: { duration: 0.6, ease: inOut, delay: 0.1 } }}
+        transition={{ duration: 0.5, ease: inOut }}
+        className="absolute inset-0 -z-10 bg-black"
+      />
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1, transition: { duration: 0.4, delay: 0.5 } }}
@@ -215,7 +222,7 @@ export function PhotosPage() {
     setOpen((o) => o && { at: (o.at + dir + visible.length) % visible.length, shared: false })
 
   const grid = (list: typeof indexed) => (
-    <div className="columns-1 sm:columns-2 gap-4 pt-8">
+    <div className="sm:columns-2 gap-4 pt-8">
       {list.map(({ photo, index }, i) => (
         <Tile
           key={photo.id}

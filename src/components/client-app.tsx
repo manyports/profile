@@ -25,6 +25,8 @@ const pages: Record<Page, () => React.ReactElement> = {
 const ease = [0.22, 1, 0.36, 1] as const
 const inOut = [0.76, 0, 0.24, 1] as const
 const morph = { duration: 0.8, ease: inOut }
+const wipeIn = "inset(0% 0% 0% 0%)"
+const wipeOut = "inset(100% 0% 0% 0%)"
 const INTRO_MS = 1500
 const INTRO_KEY = "yerassyl:intro-seen"
 
@@ -70,6 +72,8 @@ export default function ClientApp() {
   // active: which square is expanded. revealed: the white page has wiped in over it.
   const [active, setActive] = useState<Page | null>(null)
   const [revealed, setRevealed] = useState(false)
+  // the page finished wiping in; its clip-path is dropped so mobile browsers scroll it without clipping every frame
+  const [wiped, setWiped] = useState(false)
   // intro: the big name holding the screen on a first visit. playedIntro: this load ran it.
   const [phase, setPhase] = useState<"intro" | "landing">("intro")
   const [playedIntro, setPlayedIntro] = useState(false)
@@ -112,17 +116,27 @@ export default function ClientApp() {
   }, [])
 
   useEffect(() => {
-    const sync = () => {
+    const sync = (initial: boolean) => {
       const hash = window.location.hash.slice(1)
       if (isPage(hash)) {
         setEntered(true)
         setActive(hash)
+        // landing straight on /#page: there is no square to morph out of, so no layout animation will finish
+        if (initial) setRevealed(true)
       } else close()
     }
-    sync()
-    window.addEventListener("popstate", sync)
-    return () => window.removeEventListener("popstate", sync)
+    sync(true)
+    const onPop = () => sync(false)
+    window.addEventListener("popstate", onPop)
+    return () => window.removeEventListener("popstate", onPop)
   }, [close])
+
+  // if the morph gets cut short (slow devices, tab switches) its completion never fires; don't leave the panel stuck
+  useEffect(() => {
+    if (!active) return
+    const timer = setTimeout(() => activeRef.current && setRevealed(true), (morph.duration + 0.3) * 1000)
+    return () => clearTimeout(timer)
+  }, [active])
 
   const goHome = useCallback(() => {
     if (pushedRef.current) {
@@ -294,15 +308,23 @@ export default function ClientApp() {
         )}
       </AnimatePresence>
 
-      <AnimatePresence onExitComplete={() => setActive(null)}>
+      <AnimatePresence
+        onExitComplete={() => {
+          setWiped(false)
+          setActive(null)
+        }}
+      >
         {revealed && ActivePage && (
           <motion.div
             key="page"
-            initial={{ clipPath: "inset(100% 0% 0% 0%)" }}
-            animate={{ clipPath: "inset(0% 0% 0% 0%)" }}
-            exit={{ clipPath: "inset(100% 0% 0% 0%)", transition: { duration: 0.6, ease: inOut } }}
+            // layoutScroll: the photos inside share layouts with the lightbox; without it they jump around as this scrolls
+            layoutScroll
+            initial={{ clipPath: wipeOut }}
+            animate={{ clipPath: wipeIn, transitionEnd: { clipPath: "none" } }}
+            onAnimationComplete={() => revealedRef.current && setWiped(true)}
+            exit={{ clipPath: wiped ? [wipeIn, wipeOut] : wipeOut, transition: { duration: 0.6, ease: inOut } }}
             transition={{ duration: 0.7, ease: inOut, delay: 0.15 }}
-            className="fixed inset-0 z-[60] bg-white overflow-y-auto overscroll-contain"
+            className="fixed inset-0 z-[60] bg-white overflow-y-auto overscroll-contain [-webkit-overflow-scrolling:touch]"
           >
             <motion.div
               variants={staggerVariants}
