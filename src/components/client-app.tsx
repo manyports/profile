@@ -5,7 +5,7 @@ import { motion, AnimatePresence, useReducedMotion } from "framer-motion"
 import { Page } from "@/types"
 import { data } from "@/data"
 import { staggerVariants } from "@/components/reveal"
-import { LandingTile } from "@/components/landing-tile"
+import { LandingTile, CvTile, type Offset } from "@/components/landing-tile"
 import { WorkPage, AboutPage, PhotosPage, ContactPage } from "@/components/pages"
 
 const tiles: { id: Page; label: string }[] = [
@@ -178,6 +178,21 @@ export default function ClientApp() {
   // after the intro, everything else waits for the name to land
   const lag = playedIntro ? 0.6 : 0
 
+  // the cv bar sits on a row of its own above the squares (row -1, spanning both columns)
+  const CV = -1
+  const offsetOf = (i: number): Offset => {
+    if (hovered === null || hovered === i) return null
+    if (hovered === CV) return { dx: 0, dy: Math.floor(i / 2) + 1 }
+    if (i === CV) return { dx: 0, dy: -1 - Math.floor(hovered / 2) }
+    return { dx: (i % 2) - (hovered % 2), dy: Math.floor(i / 2) - Math.floor(hovered / 2) }
+  }
+
+  const cvInitial = () => {
+    if (entered) return false
+    if (!playedIntro) return { opacity: 0, y: 24 }
+    return { opacity: 0, y: -window.innerHeight * 0.45, scale: 0.5 }
+  }
+
   const tileInitial = (i: number) => {
     if (entered) return false
     if (!playedIntro) return { opacity: 0, y: 24 }
@@ -238,6 +253,18 @@ export default function ClientApp() {
           </h1>
 
           <div className="grid grid-cols-2 gap-2.5 w-full">
+            <CvTile
+              onHoverChange={(on) => hoverTile(CV, on)}
+              offset={offsetOf(CV)}
+              initial={cvInitial()}
+              transition={
+                entered
+                  ? { duration: 0.9, ease }
+                  : playedIntro
+                    ? { duration: 1.2, ease: inOut, delay: 0.14 }
+                    : { duration: 0.9, ease, delay: 0.27 }
+              }
+            />
             {tiles.map((tile, i) =>
               active === tile.id ? (
                 <div key={tile.id} className="aspect-square" />
@@ -248,11 +275,7 @@ export default function ClientApp() {
                   layoutId={`tile-${tile.id}`}
                   onOpen={() => open(tile.id)}
                   onHoverChange={(on) => hoverTile(i, on)}
-                  offset={
-                    hovered === null || hovered === i
-                      ? null
-                      : { dx: (i % 2) - (hovered % 2), dy: Math.floor(i / 2) - Math.floor(hovered / 2) }
-                  }
+                  offset={offsetOf(i)}
                   initial={tileInitial(i)}
                   transition={{ layout: morph, default: tileTransition(i) }}
                 />

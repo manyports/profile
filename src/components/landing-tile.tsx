@@ -1,6 +1,7 @@
 "use client"
 
 import { useEffect, useRef } from "react"
+import Link from "next/link"
 import {
   motion,
   useMotionTemplate,
@@ -21,7 +22,7 @@ const REACH = 1.15 // magnet range, in square widths from its center
 export type Offset = { dx: number; dy: number } | null
 
 // the fill retreats away from the hovered square, toward the far edge (or far corner on a diagonal)
-function drained({ dx, dy }: { dx: number; dy: number }) {
+export function drained({ dx, dy }: { dx: number; dy: number }) {
   const top = dy > 0 ? "100%" : "0%"
   const right = dx < 0 ? "100%" : "0%"
   const bottom = dy < 0 ? "100%" : "0%"
@@ -156,5 +157,51 @@ export function LandingTile({
         </span>
       </motion.span>
     </motion.button>
+  )
+}
+
+const MotionLink = motion.create(Link)
+
+// the wide cv bar over the grid: same ink and label as the squares, but a plain link out to /cv
+export function CvTile({
+  onHoverChange,
+  offset,
+  initial,
+  transition,
+}: Pick<LandingTileProps, "onHoverChange" | "offset" | "initial" | "transition">) {
+  return (
+    <MotionLink
+      href="/cv"
+      onPointerEnter={(e) => e.pointerType === "mouse" && onHoverChange(true)}
+      onPointerLeave={() => onHoverChange(false)}
+      onFocus={() => onHoverChange(true)}
+      onBlur={() => onHoverChange(false)}
+      aria-label="cv"
+      initial={initial}
+      animate={{ opacity: 1, x: 0, y: 0, scale: 1, rotate: 0 }}
+      transition={transition}
+      className="group/tile relative col-span-2 aspect-[4/1] block border border-black outline-none"
+    >
+      <motion.span
+        aria-hidden
+        initial={false}
+        animate={{ clipPath: offset ? drained(offset) : "inset(0% 0% 0% 0%)" }}
+        transition={{ duration: 0.6, ease: inOut }}
+        className="absolute -inset-px bg-black"
+      />
+      <span
+        className={[
+          "absolute left-3 bottom-3 flex items-center gap-1.5 text-xs font-[family-name:var(--font-geist-mono)] leading-none transition-colors duration-500",
+          offset ? "text-black" : "text-white/70 group-hover/tile:text-white group-focus-visible/tile:text-white",
+        ].join(" ")}
+      >
+        cv
+        <span className="block overflow-hidden">
+          <span className="block transition-transform duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] -translate-x-full group-hover/tile:translate-x-0 group-focus-visible/tile:translate-x-0">
+            →
+          </span>
+        </span>
+      </span>
+    </MotionLink>
   )
 }

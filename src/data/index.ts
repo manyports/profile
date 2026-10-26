@@ -33,6 +33,11 @@ export const data = {
       location: "semey, kazakhstan",
       period: "sep 2024 – may 2025",
       description: "mentored 17 students in algorithms, data structures, and problem-solving. designed olympiad-tailored problems and led training sessions.",
+      // the /cv wording of the same facts
+      highlights: [
+        "Mentored 17 students in algorithms, data structures and competitive problem solving.",
+        "Designed olympiad-style problem sets and led regular training sessions.",
+      ],
     },
     {
       id: "02",
@@ -41,6 +46,10 @@ export const data = {
       location: "semey, kazakhstan",
       period: "sep 2024 – may 2025",
       description: "taught 20 kids UI/UX basics and guided mentees from web dev fundamentals to building full-stack applications.",
+      highlights: [
+        "Taught UI/UX fundamentals to 20 students.",
+        "Guided mentees from web fundamentals to building and shipping full-stack applications.",
+      ],
     },
   ],
 
@@ -95,6 +104,10 @@ export const data = {
       title: "math12.studio",
       description: "An AI-powered web app for the Kazakhstani math syllabus. 9000+ users. Presented at nFactorial Incubator 2024.",
       technologies: ["Next.js", "Tailwind CSS", "Express.js", "ChatGPT API", "Gemini API", "MongoDB", "JWT"],
+      highlights: [
+        "AI-powered learning platform for the Kazakhstani math curriculum, grown to 9,000+ users.",
+        "Presented on Demo Day at nFactorial Incubator 2024 (finalist, top 3% of 3,000 applicants).",
+      ],
       link: "",
       github: "https://github.com/manyports/math12-deploy-real",
       year: "2024",
@@ -104,6 +117,11 @@ export const data = {
       title: "OnePorted",
       description: "a web platform to manage and teach a programming club. live compilation for HTML, CSS, JS, PHP, Python. features trace table generator and blogs with runnable code.",
       technologies: ["Next.js", "Tailwind CSS", "Monaco Editor", "shadcn/ui", "MongoDB", "JWT"],
+      highlights: [
+        "Platform for managing and teaching a school programming club.",
+        "In-browser live compilation for HTML, CSS, JavaScript, PHP and Python on top of Monaco Editor.",
+        "Trace-table generator and blog posts with runnable code samples.",
+      ],
       link: "https://oneported.vercel.app",
       github: "https://github.com/manyports/oneported",
       year: "2024",
@@ -113,6 +131,10 @@ export const data = {
       title: "satley",
       description: "a tool for tutors conducting SAT prep classes. focused on easy student-tutor communication. 500+ users.",
       technologies: ["Next.js", "Tailwind CSS", "Express.js", "MongoDB", "JWT", "Sockets"],
+      highlights: [
+        "Tool for SAT prep tutors built around easy tutor–student communication; 500+ users.",
+        "Real-time features over WebSockets, with JWT authentication and a MongoDB backend.",
+      ],
       link: "https://satley.co",
       github: "https://github.com/manyports/satley",
       year: "2024",
@@ -122,6 +144,7 @@ export const data = {
       title: "Blogs",
       description: "while it may look like this is a blogs page, that's actually a bunch of components I built from scratch.",
       technologies: ["Next.js"],
+      highlights: ["Library of UI components built from scratch, showcased as a working blog."],
       link: "https://blogs-component-showcase.vercel.app/",
       github: "",
       year: "2026",
@@ -131,6 +154,18 @@ export const data = {
   technologies: {
     languages: ["HTML", "CSS", "Python", "TypeScript", "JavaScript"],
     tools: ["Next.js", "React", "Node.js", "FastAPI", "much more than that"],
+  },
+
+  // /cv only: the summary line and a fuller, grouped skills list
+  cv: {
+    title: "Software Engineer",
+    summary:
+      "Full-stack engineer focused on the web: simple, fast interfaces with careful attention to detail. I have shipped products used by thousands of people and won national hackathons across Kazakhstan.",
+    skills: [
+      { label: "Languages", items: ["TypeScript", "JavaScript", "Python", "HTML", "CSS"] },
+      { label: "Frameworks", items: ["React", "Next.js", "Node.js", "Express.js", "FastAPI", "Tailwind CSS"] },
+      { label: "Data & APIs", items: ["MongoDB", "REST", "WebSockets", "JWT auth", "OpenAI API", "Gemini API"] },
+    ],
   },
 
   socials: [
