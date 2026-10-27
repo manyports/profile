@@ -7,7 +7,7 @@ export const data = {
     location: "astana, kazakhstan",
     email: "yeahrassyl@gmail.com",
     phone: "+7 (707) 278 00-01",
-    website: "https://yerassyl.vercel.app/",
+    website: "https://manyports.com/",
   },
 
   about: [
@@ -20,7 +20,7 @@ export const data = {
     {
       id: "01",
       school: "Nazarbayev Intellectual School of Science and Mathematics",
-      location: "Semey",
+      location: "Semey, Kazakhstan",
       period: "Sep 2020 – Jun 2026",
     }
   ] as Education[],
@@ -33,11 +33,6 @@ export const data = {
       location: "semey, kazakhstan",
       period: "sep 2024 – may 2025",
       description: "mentored 17 students in algorithms, data structures, and problem-solving. designed olympiad-tailored problems and led training sessions.",
-      // the /cv wording of the same facts
-      highlights: [
-        "Mentored 17 students in algorithms, data structures and competitive problem solving.",
-        "Designed olympiad-style problem sets and led regular training sessions.",
-      ],
     },
     {
       id: "02",
@@ -46,19 +41,16 @@ export const data = {
       location: "semey, kazakhstan",
       period: "sep 2024 – may 2025",
       description: "taught 20 kids UI/UX basics and guided mentees from web dev fundamentals to building full-stack applications.",
-      highlights: [
-        "Taught UI/UX fundamentals to 20 students.",
-        "Guided mentees from web fundamentals to building and shipping full-stack applications.",
-      ],
     },
   ],
 
+  // newest first; the site, llms.txt and /cv all list them in this order
   qualifications: [
     {
       id: "01",
-      title: "nFactorial Incubator 2024 Finalist",
-      description: "Presented math12.studio on Demo Day. Top 3% out of 3000 applicants.",
-      date: "Aug 2024",
+      title: "MedTech Hackathon",
+      description: "1st Place among 130 teams (National)",
+      date: "Jun 2026",
     },
     {
       id: "02",
@@ -68,34 +60,34 @@ export const data = {
     },
     {
       id: "03",
-      title: "Freedom Hackathon",
-      description: "2nd Place among 79 teams (National)",
-      date: "Nov 2024",
-    },
-    {
-      id: "04",
-      title: "Hack the BookShelf",
-      description: "1st Place among 67 teams (National)",
-      date: "Sep 2024",
-    },
-    {
-      id: "05",
-      title: "Law and Code Hackathon",
-      description: "1st Place among 60 teams (National)",
-      date: "Mar 2025",
-    },
-    {
-      id: "06",
       title: "HackCor Hackathon",
       description: "2nd Place among 62 teams (National)",
       date: "Jun 2025",
     },
     {
+      id: "04",
+      title: "Law and Code Hackathon",
+      description: "1st Place among 60 teams (National)",
+      date: "Mar 2025",
+    },
+    {
+      id: "05",
+      title: "Freedom Hackathon",
+      description: "2nd Place among 79 teams (National)",
+      date: "Nov 2024",
+    },
+    {
+      id: "06",
+      title: "Hack the BookShelf",
+      description: "1st Place among 67 teams (National)",
+      date: "Sep 2024",
+    },
+    {
       id: "07",
-      title: "MedTech Hackathon",
-      description: "1st place among 130 teams (National)",
-      date: "Jun 2026",
-    }
+      title: "nFactorial Incubator 2024 Finalist",
+      description: "Presented math12.studio on Demo Day. Top 3% out of 3000 applicants.",
+      date: "Aug 2024",
+    },
   ],
 
   projects: [
@@ -104,10 +96,6 @@ export const data = {
       title: "math12.studio",
       description: "An AI-powered web app for the Kazakhstani math syllabus. 9000+ users. Presented at nFactorial Incubator 2024.",
       technologies: ["Next.js", "Tailwind CSS", "Express.js", "ChatGPT API", "Gemini API", "MongoDB", "JWT"],
-      highlights: [
-        "AI-powered learning platform for the Kazakhstani math curriculum, grown to 9,000+ users.",
-        "Presented on Demo Day at nFactorial Incubator 2024 (finalist, top 3% of 3,000 applicants).",
-      ],
       link: "",
       github: "https://github.com/manyports/math12-deploy-real",
       year: "2024",
@@ -117,11 +105,6 @@ export const data = {
       title: "OnePorted",
       description: "a web platform to manage and teach a programming club. live compilation for HTML, CSS, JS, PHP, Python. features trace table generator and blogs with runnable code.",
       technologies: ["Next.js", "Tailwind CSS", "Monaco Editor", "shadcn/ui", "MongoDB", "JWT"],
-      highlights: [
-        "Platform for managing and teaching a school programming club.",
-        "In-browser live compilation for HTML, CSS, JavaScript, PHP and Python on top of Monaco Editor.",
-        "Trace-table generator and blog posts with runnable code samples.",
-      ],
       link: "https://oneported.vercel.app",
       github: "https://github.com/manyports/oneported",
       year: "2024",
@@ -131,20 +114,15 @@ export const data = {
       title: "satley",
       description: "a tool for tutors conducting SAT prep classes. focused on easy student-tutor communication. 500+ users.",
       technologies: ["Next.js", "Tailwind CSS", "Express.js", "MongoDB", "JWT", "Sockets"],
-      highlights: [
-        "Tool for SAT prep tutors built around easy tutor–student communication; 500+ users.",
-        "Real-time features over WebSockets, with JWT authentication and a MongoDB backend.",
-      ],
       link: "https://satley.co",
       github: "https://github.com/manyports/satley",
-      year: "2024",
+      year: "2025",
     },
     {
       id: "04",
       title: "Blogs",
       description: "while it may look like this is a blogs page, that's actually a bunch of components I built from scratch.",
       technologies: ["Next.js"],
-      highlights: ["Library of UI components built from scratch, showcased as a working blog."],
       link: "https://blogs-component-showcase.vercel.app/",
       github: "",
       year: "2026",
@@ -156,15 +134,73 @@ export const data = {
     tools: ["Next.js", "React", "Node.js", "FastAPI", "much more than that"],
   },
 
-  // /cv only: the summary line and a fuller, grouped skills list
+  // /cv and /cv/pdf only: recruiter-facing copy, written separately from the site's lowercase voice.
+  // every claim here is backed by a public repo or the data above; keep it that way.
   cv: {
-    title: "Software Engineer",
+    title: "Full-Stack Software Engineer",
     summary:
-      "Full-stack engineer focused on the web: simple, fast interfaces with careful attention to detail. I have shipped products used by thousands of people and won national hackathons across Kazakhstan.",
+      "Frontend-leaning full-stack engineer working in TypeScript end to end: React/Next.js on the client, Node.js and MongoDB on the server. Took an AI math tutor to 9,000+ students; currently building my own component library.",
+    // frontend-heavy work first
+    projects: [
+      {
+        title: "math12.studio",
+        tagline: "AI math tutor",
+        stack: ["Next.js", "TypeScript", "Express.js", "MongoDB", "Gemini API", "OpenAI API", "KaTeX"],
+        links: ["https://github.com/manyports/math12-deploy-real"],
+        year: "2024",
+        highlights: [
+          "Built and launched an AI tutor for Kazakhstan's school math curriculum; grew it to 9,000+ users and 700 registrations.",
+          "Built the chat tutor UI, rendering LLM math with KaTeX, plus a photo-to-solution solver and curriculum-aligned tests with progress tracking.",
+          "Split it into a Next.js client and an Express + MongoDB API with JWT cookie sessions.",
+        ],
+      },
+      {
+        title: "OnePorted",
+        tagline: "Learning platform for a school programming club",
+        stack: ["Next.js", "TypeScript", "Monaco Editor", "Babel", "MongoDB"],
+        links: ["https://oneported.vercel.app", "https://github.com/manyports/oneported"],
+        year: "2024",
+        highlights: [
+          "Built a Monaco-based code playground that transpiles and previews React/JSX in the browser via Babel; Python and PHP run in remote sandboxes.",
+          "Built lessons with runnable examples, a trace-table generator and event sign-ups for a 20-member school programming club with two branches across the country.",
+        ],
+      },
+      {
+        title: "satley",
+        tagline: "SAT-prep platform · 500+ users",
+        stack: ["Next.js", "Express.js", "WebSockets", "MongoDB", "JWT"],
+        links: ["https://satley.co"],
+        year: "2025",
+        highlights: ["Built a tutor–student platform for SAT prep with real-time messaging over WebSockets."],
+      },
+    ],
+    // the two mentor roles in data.experience were one job; the cv shows them as one entry
+    experience: [
+      {
+        title: "Programming Mentor",
+        company: "Nazarbayev Intellectual Schools",
+        location: "Semey, Kazakhstan",
+        period: "Sep 2024 – May 2025",
+        highlights: [
+          "Coached 17 students in algorithms and data structures for olympiads; wrote problem sets and led training sessions.",
+          "Ran a 20-student web development track, from UI/UX fundamentals to building and shipping full-stack apps.",
+        ],
+      },
+    ],
+    // only what the projects above show
     skills: [
       { label: "Languages", items: ["TypeScript", "JavaScript", "Python", "HTML", "CSS"] },
-      { label: "Frameworks", items: ["React", "Next.js", "Node.js", "Express.js", "FastAPI", "Tailwind CSS"] },
-      { label: "Data & APIs", items: ["MongoDB", "REST", "WebSockets", "JWT auth", "OpenAI API", "Gemini API"] },
+      { label: "Frontend", items: ["React", "Next.js", "Tailwind CSS", "Monaco Editor", "Babel", "KaTeX"] },
+      { label: "Backend", items: ["Node.js", "Express.js", "REST", "WebSockets", "JWT", "Git"] },
+      { label: "Data & AI", items: ["MongoDB", "OpenAI API", "Gemini API"] },
+    ],
+    education: [
+      {
+        school: "Nazarbayev Intellectual School of Science and Mathematics",
+        kind: "high school, physics & math track",
+        location: "Semey",
+        period: "2020–2026",
+      },
     ],
   },
 
