@@ -1,72 +1,88 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
-:root {
-  --bg: #ffffff;
-  --fg: #000000;
-  --gray-1: #fafafa;
-  --gray-2: #eaeaea;
-  --gray-3: #999999;
-  --gray-4: #666666;
-  --background: #ffffff;
-  --foreground: #000000;
-}
+@import "tailwindcss";
+@import "@blurrow/ui/styles.css";
 
+/* let tailwind see the classes @blurrow/ui uses */
+@source "../../node_modules/@blurrow/ui";
+
+
+
+/* a warmer paper and warm inks: the same kit, in a cozier room.
+   these override blurrow's light roles only, so its dark material stays as made. */
+:root,
+[data-theme='light'] {
+  --page: #f3efe8;
+  --ink: #24211d;
+  --ink-strong: #1a1815;
+  --ink-soft: #2f2b26;
+  --ink-label: #3d3832;
+  --ink-body: #4f4943;
+  --ink-muted: #857e74;
+  --ink-faint: #a29a8f;
+  --ink-ghost: #d8d1c6;
+  --line-strong: #e4ddd2;
+  --surface-hover: #ebe5db;
+  --surface-active: #e6dfd3;
+
+  /* blurrow's materials, in the same warm paper and charcoal as the page around them */
+  --bezel-light: linear-gradient(180deg, #f7f3ec 0%, #ddd5c8 100%);
+  --face-light: linear-gradient(180deg, #fffdf9 0%, #faf6f0 55%, #f2ece3 100%);
+  --bezel-dark: linear-gradient(180deg, #38332d 0%, #15130f 100%);
+  --face-dark: linear-gradient(180deg, #36322c 0%, #28241f 55%, #201d19 100%);
+  --card-light: linear-gradient(180deg, #fffdf9 0%, #fdfaf5 40%, #f9f5ee 100%);
+  --card-bezel-light: linear-gradient(180deg, #fcf9f4 0%, #f4efe6 100%);
+  --panel-face: #fffdf9;
+  --panel-bezel: linear-gradient(180deg, #faf7f1 0%, #eee8de 100%);
+  --panel-tray: linear-gradient(180deg, #faf7f2 0%, #f5f1ea 100%);
+  --field-from: #ede7dd;
+  --field-to: #f5f1ea;
+  --field-hover-from: #e9e2d7;
+  --field-hover-to: #f2ede5;
+  --field-focus: #fffdf9;
+  --field: linear-gradient(180deg, #ede7dd 0%, #f5f1ea 100%);
+  --field-hover: linear-gradient(180deg, #e9e2d7 0%, #f2ede5 100%);
+  --well: linear-gradient(180deg, #e8e1d6 0%, #efe9e0 100%);
+  --badge: linear-gradient(180deg, #fffdf9 0%, #efe9df 100%);
+  --track: color-mix(in oklab, #ddd5c8 75%, transparent);
+  --track-on: #2a2621;
+  --media-well-light: linear-gradient(180deg, rgba(70, 50, 30, 0.03) 0%, rgba(70, 50, 30, 0.05) 100%);
+  --dots: rgba(70, 50, 30, 0.09);
+  --media-dots: rgba(70, 50, 30, 0.1);
+  --divider: rgba(70, 50, 30, 0.08);
+  --hairline: rgba(70, 50, 30, 0.07);
+  --groove: color-mix(in oklab, #24211d 9%, transparent);
+
+  /* the one accent: a warm terracotta instead of violet */
+  --accent: #9a5b36;
+  --accent-soft: #b06c43;
+  --badge-accent: linear-gradient(180deg, #f8eee5 0%, #f0e0d2 100%);
+  --lamp-accent: #b8733f;
+}
 
 html {
   scroll-behavior: smooth;
 }
 
 body {
-  background: var(--bg);
-  color: var(--fg);
+  background: var(--page);
+  color: var(--ink);
   -webkit-font-smoothing: antialiased;
 }
 
 ::selection {
-  background: var(--fg);
-  color: var(--bg);
+  background: var(--ink);
+  color: var(--page);
 }
 
-/* tab panel slide (ported from blogs/) */
-@keyframes tab-slide-right {
-  from { opacity: 0; transform: translateX(20px); }
-  to   { opacity: 1; transform: translateX(0); }
-}
-@keyframes tab-slide-left {
-  from { opacity: 0; transform: translateX(-20px); }
-  to   { opacity: 1; transform: translateX(0); }
-}
-.animate-tab-slide-right {
-  animation: tab-slide-right 280ms cubic-bezier(0.16, 1, 0.3, 1) both;
-}
-.animate-tab-slide-left {
-  animation: tab-slide-left 280ms cubic-bezier(0.16, 1, 0.3, 1) both;
+@theme {
+  --font-hand: var(--font-caveat), cursive;
 }
 
-/* film grain over everything */
-.grain {
-  position: fixed;
-  /* just big enough to cover the jitter (max 7% shift); -100% made a 9x-screen layer that choked mobile GPUs */
-  inset: -10%;
-  z-index: 100;
-  will-change: transform;
-  pointer-events: none;
-  opacity: 0.07;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
-  animation: grain 0.9s steps(5) infinite;
+/* the header settles in once; nothing else enters */
+@keyframes header-in {
+  from { opacity: 0; transform: translateY(-6px); }
+  to   { opacity: 1; transform: translateY(0); }
 }
-@keyframes grain {
-  0%   { transform: translate(0, 0); }
-  20%  { transform: translate(-6%, 4%); }
-  40%  { transform: translate(4%, -7%); }
-  60%  { transform: translate(-3%, -4%); }
-  80%  { transform: translate(7%, 5%); }
-  100% { transform: translate(0, 0); }
-}
-@media (prefers-reduced-motion: reduce) {
-  .grain { animation: none; }
-}
+.animate-header-in { animation: header-in 360ms var(--ease-spring) both; }
 
 /* endless strip; content is rendered twice, so -50% lands on a seamless loop */
 @keyframes marquee {
@@ -82,4 +98,28 @@ body {
 .marquee-track:hover .marquee { animation-play-state: paused; }
 @media (prefers-reduced-motion: reduce) {
   .marquee { animation: none; }
+}
+
+/* the # pages: words on the left, held in view as you scroll; the page itself on the right.
+   plain css, so the layout never depends on a utility class being picked up by the dev server */
+.page-frame {
+  max-width: 60rem;
+  margin-inline: auto;
+}
+.page-grid {
+  display: grid;
+  gap: 3.5rem;
+  margin-top: 3.5rem;
+}
+@media (min-width: 768px) {
+  .page-grid {
+    grid-template-columns: minmax(0, 16rem) minmax(0, 1fr);
+    column-gap: 4rem;
+    margin-top: 5rem;
+  }
+  .page-aside {
+    position: sticky;
+    top: 2.5rem;
+    align-self: start;
+  }
 }

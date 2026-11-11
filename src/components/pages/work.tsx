@@ -6,6 +6,7 @@ import { motion, useMotionValue, useSpring, AnimatePresence } from "framer-motio
 import { data } from "@/data"
 import { Item } from "@/components/reveal"
 import { Now } from "@/components/now"
+import { BlurrowStage } from "@/components/blurrow-stage"
 import { SectionLabel } from "@/components/section-label"
 import { Accordion } from "@/components/ui/Accordion"
 import { mono } from "@/components/ui/Row"
@@ -13,7 +14,7 @@ import { mono } from "@/components/ui/Row"
 const pad = (i: number) => String(i + 1).padStart(2, "0")
 const ease = [0.22, 1, 0.36, 1] as const
 
-const link = "text-black underline underline-offset-4 decoration-[#ccc] hover:decoration-black transition-colors"
+const link = "text-ink underline underline-offset-4 decoration-ink-ghost hover:decoration-ink transition-colors"
 
 type Project = (typeof data.projects)[number]
 
@@ -56,7 +57,8 @@ function Follower({ project, index }: { project: Project | null; index: number }
             animate={{ scale: 1, rotate: 0 }}
             exit={{ scale: 0, rotate: 8 }}
             transition={{ duration: 0.45, ease }}
-            className="w-36 h-36 bg-white text-black p-3 flex flex-col justify-between origin-top-left"
+            // pure white on purpose: the difference blend only inverts cleanly against white
+            className="w-36 h-36 bg-[#fff] text-[#000] p-3 flex flex-col justify-between origin-top-left"
           >
             <span className={mono}>{pad(index)}</span>
             <span>
@@ -83,6 +85,8 @@ function Follower({ project, index }: { project: Project | null; index: number }
 
 export function WorkPage() {
   const featured = data.projects.find((project) => project.id === "04") ?? data.projects[data.projects.length - 1]
+  // the featured project has its own showcase above, so the list skips it
+  const listed = data.projects.filter((project) => project.id !== featured.id)
   const [hovered, setHovered] = useState<number | null>(null)
   const [canHover, setCanHover] = useState(false)
 
@@ -98,9 +102,9 @@ export function WorkPage() {
   return (
     <div className="space-y-24">
       <Item className="space-y-8">
-        <Now label="building" title={featured.title} sub={featured.description} />
+        <Now label="now building" title={featured.title} sub={featured.description} />
         <div className={`${mono} flex flex-wrap items-center gap-x-6 gap-y-3`}>
-          <span className="flex items-center gap-2 text-black">
+          <span className="flex items-center gap-2 text-ink">
             in progress · {featured.year}
           </span>
           {featured.link && (
@@ -109,16 +113,17 @@ export function WorkPage() {
             </a>
           )}
         </div>
+        <BlurrowStage />
       </Item>
 
       <Item className="space-y-5">
         <div className="flex items-baseline justify-between">
           <SectionLabel>selected work</SectionLabel>
-          <SectionLabel>{String(data.projects.length).padStart(2, "0")} projects</SectionLabel>
+          <SectionLabel>{String(listed.length).padStart(2, "0")} projects</SectionLabel>
         </div>
         <div onPointerMove={track} onPointerLeave={() => setHovered(null)}>
           <Accordion
-            items={data.projects.map((project, i) => ({
+            items={listed.map((project, i) => ({
               key: project.id,
               index: pad(i),
               title: <span data-row={i}>{project.title}</span>,
@@ -134,7 +139,7 @@ export function WorkPage() {
                         initial={{ opacity: 0, y: 6 }}
                         whileInView={{ opacity: 1, y: 0 }}
                         transition={{ duration: 0.4, ease, delay: 0.15 + t * 0.04 }}
-                        className={`${mono} border border-[#e5e5e5] px-2 py-1 text-[#555] hover:border-black hover:text-black transition-colors`}
+                        className={`${mono} border border-line-strong px-2 py-1 text-ink-body hover:border-ink hover:text-ink transition-colors`}
                       >
                         {tech}
                       </motion.li>
@@ -161,7 +166,7 @@ export function WorkPage() {
         </div>
       </Item>
 
-      {canHover && <Follower project={hovered === null ? null : data.projects[hovered]} index={hovered ?? 0} />}
+      {canHover && <Follower project={hovered === null ? null : listed[hovered]} index={hovered ?? 0} />}
     </div>
   )
 }

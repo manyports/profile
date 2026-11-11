@@ -6,7 +6,6 @@ import Image from "next/image"
 import { AnimatePresence, motion, useInView, useReducedMotion } from "framer-motion"
 import { data } from "@/data"
 import { Item } from "@/components/reveal"
-import { Now } from "@/components/now"
 import { Tabs } from "@/components/ui/Tabs"
 import { RowContent, mono } from "@/components/ui/Row"
 
@@ -42,7 +41,7 @@ function Tile({ photo, index, lifted, onOpen }: { photo: Photo; index: number; l
           <motion.span
             layoutId={`photo-${photo.id}`}
             transition={{ layout: morph }}
-            className="absolute inset-0 overflow-hidden bg-[#f5f5f5]"
+            className="absolute inset-0 overflow-hidden bg-surface-hover"
           >
             <motion.span
               className="absolute inset-0"
@@ -57,12 +56,12 @@ function Tile({ photo, index, lifted, onOpen }: { photo: Photo; index: number; l
                 sizes={gridSizes}
                 priority={index < 2}
                 onLoad={() => setLoaded(true)}
-                className="object-cover grayscale group-hover:grayscale-0 group-focus-visible:grayscale-0 group-hover:scale-[1.04] transition-[filter,transform] duration-700 ease-[cubic-bezier(0.22,1,0.36,1)]"
+                className="object-cover group-hover:scale-[1.03] transition-transform duration-700 ease-[cubic-bezier(0.22,1,0.36,1)]"
               />
             </motion.span>
             <motion.span
               aria-hidden
-              className={["absolute inset-0 origin-top bg-[#f5f5f5]", loaded ? "" : "animate-pulse"].join(" ")}
+              className={["absolute inset-0 origin-top bg-surface-hover", loaded ? "" : "animate-pulse"].join(" ")}
               initial={false}
               animate={{ scaleY: reveal ? 0 : 1 }}
               transition={{ duration: reduceMotion ? 0 : 0.9, ease: inOut, delay: (index % 2) * 0.08 }}
@@ -70,7 +69,7 @@ function Tile({ photo, index, lifted, onOpen }: { photo: Photo; index: number; l
           </motion.span>
         )}
       </span>
-      <span className="relative flex items-baseline gap-4 px-3 py-4 border-b border-[#e5e5e5]">
+      <span className="relative flex items-baseline gap-4 px-3 py-4 border-b border-line-strong">
         <RowContent index={pad(index)} title={photo.caption} meta={photo.year} interactive />
       </span>
     </button>
@@ -109,14 +108,14 @@ function Lightbox({
     return () => window.removeEventListener("keydown", onKey, true)
   }, [onStep, onClose])
 
-  const control = `${mono} text-white/60 hover:text-white transition-colors cursor-pointer`
+  const control = `${mono} text-ink-inverse/60 hover:text-ink-inverse transition-colors cursor-pointer`
 
   return (
     <motion.div
       // the exit is driven by the backdrop below; this only holds the dialog until it finishes
       exit={{ opacity: 1, transition: { duration: 0.7 } }}
       onClick={onClose}
-      className="fixed inset-0 z-[70] flex flex-col text-white cursor-zoom-out"
+      className="fixed inset-0 z-[70] flex flex-col text-ink-inverse cursor-zoom-out"
       role="dialog"
       aria-modal
       aria-label={photo.caption}
@@ -128,7 +127,7 @@ function Lightbox({
         animate={{ opacity: 1 }}
         exit={{ opacity: 0, transition: { duration: 0.6, ease: inOut, delay: 0.1 } }}
         transition={{ duration: 0.5, ease: inOut }}
-        className="absolute inset-0 -z-10 bg-black"
+        className="absolute inset-0 -z-10 bg-ink"
       />
       <motion.div
         initial={{ opacity: 0 }}
@@ -136,7 +135,7 @@ function Lightbox({
         exit={{ opacity: 0, transition: { duration: 0.2 } }}
         className="flex items-center justify-between px-6 md:px-10 h-16 shrink-0"
       >
-        <span className={`${mono} tabular-nums text-white/60`}>
+        <span className={`${mono} tabular-nums text-ink-inverse/60`}>
           {pad(at)} / {pad(photos.length - 1)}
         </span>
         <button type="button" onClick={onClose} className={control}>
@@ -153,7 +152,7 @@ function Lightbox({
           animate={{ opacity: 1, x: 0 }}
           exit={shared ? undefined : { opacity: 0 }}
           onClick={(e) => e.stopPropagation()}
-          className="relative overflow-hidden bg-[#111] cursor-default"
+          className="relative overflow-hidden bg-ink-soft cursor-default"
           style={{ aspectRatio: `${ratio}`, width: `min(100%, calc((100svh - 13rem) * ${ratio}))` }}
         >
           <Image src={photo.src} alt="" fill sizes={gridSizes} className="object-cover" />
@@ -177,7 +176,7 @@ function Lightbox({
         className="flex items-end justify-between gap-6 px-6 md:px-10 h-36 pb-8 shrink-0 cursor-default"
       >
         <div className="min-w-0">
-          <span className={`${mono} block text-white/60 mb-2`}>
+          <span className={`${mono} block text-ink-inverse/60 mb-2`}>
             {pad(index)} · {meta(photo)}
           </span>
           <span className="block overflow-hidden pb-[0.08em]">
@@ -209,7 +208,6 @@ function Lightbox({
 
 export function PhotosPage() {
   const places = [...new Set(data.photos.map((p) => p.location))]
-  const years = data.photos.map((p) => p.year).filter(Boolean).sort()
   const [filter, setFilter] = useState("all")
   // at: position in the current filter. shared: still the photo that was clicked, so it can fly back.
   const [open, setOpen] = useState<{ at: number; shared: boolean } | null>(null)
@@ -239,14 +237,6 @@ export function PhotosPage() {
 
   return (
     <div className="space-y-16">
-      <Item>
-        <Now
-          label="moments"
-          title="small things i pointed a camera at."
-          sub={`${data.photos.length} photos · ${places.join(", ")} · ${years[0]} – ${years[years.length - 1]}`}
-        />
-      </Item>
-
       <Item>
         <Tabs
           onChange={(key) => {

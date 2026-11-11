@@ -17,8 +17,8 @@ export function Marquee({
     <span aria-hidden={hidden} className="flex shrink-0">
       {items.map((item, i) => (
         <span key={i} className="flex items-baseline">
-          <span className={muted ? "text-[#ccc] hover:text-black transition-colors duration-300" : ""}>{item}</span>
-          <span className="text-[#ccc] px-[0.4em]">{separator}</span>
+          <span className={muted ? "text-ink-ghost hover:text-ink transition-colors duration-300" : ""}>{item}</span>
+          <span className="text-ink-ghost px-[0.4em]">{separator}</span>
         </span>
       ))}
     </span>

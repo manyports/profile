@@ -123,18 +123,18 @@ export function LandingTile({
       initial={initial}
       animate={{ opacity: 1, x: 0, y: 0, scale: 1, rotate: 0 }}
       transition={transition}
-      className="group/tile relative aspect-square cursor-pointer outline-none [perspective:700px]"
+      className="group/tile relative aspect-square cursor-pointer outline-none [perspective:700px] focus-visible:ring-2 focus-visible:ring-ink/30"
     >
       <motion.span
         style={{ x, y, rotateX, rotateY }}
-        className="absolute inset-0 block border border-black [transform-style:preserve-3d]"
+        className="absolute inset-0 block border border-ink/15 [transform-style:preserve-3d]"
       >
         <motion.span
           aria-hidden
           initial={false}
           animate={{ clipPath: offset ? drained(offset) : "inset(0% 0% 0% 0%)" }}
           transition={{ duration: 0.6, ease: inOut, delay: offset && diagonal ? 0.07 : 0 }}
-          className="absolute -inset-px bg-black overflow-hidden"
+          className="absolute -inset-px bg-ink overflow-hidden"
         >
           <motion.span
             style={{ background: spotlight }}
@@ -144,8 +144,8 @@ export function LandingTile({
         {/* one label, always in the same corner; hovering brightens it and slides an arrow in */}
         <span
           className={[
-            "absolute left-3 bottom-3 flex items-center gap-1.5 text-xs font-[family-name:var(--font-geist-mono)] leading-none transition-colors duration-500",
-            offset ? "text-black" : "text-white/70 group-hover/tile:text-white group-focus-visible/tile:text-white",
+            "absolute left-3 bottom-3 flex items-center gap-1.5 text-xs tabular-nums leading-none transition-colors duration-500",
+            offset ? "text-ink" : "text-ink-inverse/70 group-hover/tile:text-ink-inverse group-focus-visible/tile:text-ink-inverse",
           ].join(" ")}
         >
           {label}
@@ -180,19 +180,19 @@ export function CvTile({
       initial={initial}
       animate={{ opacity: 1, x: 0, y: 0, scale: 1, rotate: 0 }}
       transition={transition}
-      className="group/tile relative col-span-2 aspect-[4/1] block border border-black outline-none"
+      className="group/tile relative col-span-2 aspect-[4/1] block border border-ink/15 outline-none focus-visible:ring-2 focus-visible:ring-ink/30"
     >
       <motion.span
         aria-hidden
         initial={false}
         animate={{ clipPath: offset ? drained(offset) : "inset(0% 0% 0% 0%)" }}
         transition={{ duration: 0.6, ease: inOut }}
-        className="absolute -inset-px bg-black"
+        className="absolute -inset-px bg-ink"
       />
       <span
         className={[
-          "absolute left-3 bottom-3 flex items-center gap-1.5 text-xs font-[family-name:var(--font-geist-mono)] leading-none transition-colors duration-500",
-          offset ? "text-black" : "text-white/70 group-hover/tile:text-white group-focus-visible/tile:text-white",
+          "absolute left-3 bottom-3 flex items-center gap-1.5 text-xs tabular-nums leading-none transition-colors duration-500",
+          offset ? "text-ink" : "text-ink-inverse/70 group-hover/tile:text-ink-inverse group-focus-visible/tile:text-ink-inverse",
         ].join(" ")}
       >
         cv

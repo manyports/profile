@@ -4,7 +4,6 @@ import { useEffect, useRef, useState } from "react"
 import { animate, motion, useInView, useReducedMotion, type Variants } from "framer-motion"
 import { data } from "@/data"
 import { Item } from "@/components/reveal"
-import { Now } from "@/components/now"
 import { SectionLabel } from "@/components/section-label"
 import { Accordion } from "@/components/ui/Accordion"
 import { mono } from "@/components/ui/Row"
@@ -16,8 +15,8 @@ const inOut = [0.76, 0, 0.24, 1] as const
 // words ink in from light gray as the paragraph scrolls into view
 const words: Variants = { hidden: {}, shown: { transition: { staggerChildren: 0.012 } } }
 const word: Variants = {
-  hidden: { color: "#d4d4d4" },
-  shown: { color: "#555555", transition: { duration: 0.5, ease } },
+  hidden: { opacity: 0.25 },
+  shown: { opacity: 1, transition: { duration: 0.5, ease } },
 }
 
 function Ink({ text }: { text: string }) {
@@ -64,8 +63,8 @@ function Marquee({ items, reverse = false, muted = false }: { items: string[]; r
     <span aria-hidden={hidden} className="flex shrink-0">
       {items.map((item) => (
         <span key={item} className="flex items-baseline">
-          <span className={muted ? "text-[#ccc] hover:text-black transition-colors duration-300" : ""}>{item}</span>
-          <span className="text-[#ccc] px-[0.4em]">/</span>
+          <span className={muted ? "text-ink-ghost hover:text-ink transition-colors duration-300" : ""}>{item}</span>
+          <span className="text-ink-ghost px-[0.4em]">/</span>
         </span>
       ))}
     </span>
@@ -90,8 +89,7 @@ export function AboutPage() {
   return (
     <div className="space-y-24">
       <Item className="space-y-8">
-        <Now label="about" title="a software engineer who loves building things for the web." />
-        <div className="space-y-4 text-[15px] leading-relaxed max-w-lg">
+        <div className="space-y-4 text-[15px] leading-relaxed max-w-lg text-ink-body">
           {data.about.map((text) => (
             <Ink key={text} text={text} />
           ))}
@@ -100,10 +98,10 @@ export function AboutPage() {
 
       <Item className="space-y-8">
         <SectionLabel>education</SectionLabel>
-        <div className="relative pl-10">
+        <div className="relative pl-10 lowercase">
           <motion.span
             aria-hidden
-            className="absolute left-[5px] top-2 bottom-2 w-px bg-black origin-top"
+            className="absolute left-[5px] top-2 bottom-2 w-px bg-ink origin-top"
             initial={{ scaleY: 0 }}
             whileInView={{ scaleY: 1 }}
             viewport={{ once: true }}
@@ -121,18 +119,18 @@ export function AboutPage() {
                 transition={{ duration: 0.7, ease, delay: 0.3 + i * 0.25 }}
               >
                 <span aria-hidden className="absolute -left-10 top-[3px] w-[11px] h-[11px]">
-                  {current && <span className="absolute inset-0 bg-black" />}
+                  {current && <span className="absolute inset-0 bg-ink" />}
                   <span
-                    className={["absolute inset-0 border border-black", current ? "bg-black" : "bg-white"].join(" ")}
+                    className={["absolute inset-0 border border-ink", current ? "bg-ink" : "bg-page"].join(" ")}
                   />
                 </span>
-                <p className={`${mono} text-[#999] mb-2`}>
+                <p className={`${mono} text-ink-muted mb-2`}>
                   {edu.period}
-                  {current && <span className="text-black"> · now</span>}
+                  {current && <span className="text-ink"> · now</span>}
                 </p>
                 <p className="text-xl md:text-2xl font-medium tracking-[-0.03em] leading-tight">{edu.school}</p>
-                {edu.major && <p className="text-[15px] text-[#555] mt-1">{edu.major}</p>}
-                <p className={`${mono} text-[#999] mt-2`}>{edu.location}</p>
+                {edu.major && <p className="text-[15px] text-ink-body mt-1">{edu.major}</p>}
+                <p className={`${mono} text-ink-muted mt-2`}>{edu.location}</p>
               </motion.div>
             )
           })}
@@ -149,7 +147,7 @@ export function AboutPage() {
             meta: exp.period,
             content: (
               <>
-                <p className={`${mono} text-[#999] mb-3`}>
+                <p className={`${mono} text-ink-muted mb-3`}>
                   {exp.company} · {exp.location}
                 </p>
                 <p>{exp.description}</p>
@@ -160,7 +158,7 @@ export function AboutPage() {
       </Item>
 
       <Item className="space-y-5">
-        <SectionLabel>qualifications</SectionLabel>
+        <SectionLabel>hackathons</SectionLabel>
         <Accordion
           items={data.qualifications.map((honor, i) => ({
             key: honor.id,
@@ -174,7 +172,7 @@ export function AboutPage() {
 
       <Item className="space-y-6">
         <SectionLabel>stack</SectionLabel>
-        <div className="space-y-2 border-y border-black py-6 text-4xl md:text-6xl font-medium tracking-[-0.05em] leading-[1.1]">
+        <div className="space-y-2 border-y border-line-strong py-6 text-4xl md:text-6xl font-medium tracking-[-0.05em] leading-[1.1]">
           <Marquee items={technologies.tools} />
           <Marquee items={technologies.languages} reverse muted />
         </div>

@@ -56,12 +56,12 @@ export function Tabs({ tabs, defaultTab, onChange, className = "" }: TabsProps) 
       <div
         ref={listRef}
         role="tablist"
-        className="relative flex items-center gap-6 border-b border-black"
+        className="relative flex items-center gap-6 border-b border-ink"
       >
         {bar.ready && (
           <span
             aria-hidden
-            className="absolute -bottom-px h-[3px] bg-black pointer-events-none"
+            className="absolute -bottom-px h-[3px] bg-ink pointer-events-none"
             style={{
               left: bar.left,
               width: bar.width,
@@ -78,8 +78,8 @@ export function Tabs({ tabs, defaultTab, onChange, className = "" }: TabsProps) 
             aria-selected={active === tab.key}
             onClick={() => handleSelect(tab.key)}
             className={[
-              "relative py-3 font-[family-name:var(--font-geist-mono)] text-xs whitespace-nowrap cursor-pointer transition-colors duration-200",
-              active === tab.key ? "text-black" : "text-[#999] hover:text-black",
+              "relative py-3 tabular-nums text-xs whitespace-nowrap cursor-pointer transition-colors duration-200",
+              active === tab.key ? "text-ink" : "text-ink-muted hover:text-ink",
             ].join(" ")}
           >
             {tab.label}
@@ -92,7 +92,7 @@ export function Tabs({ tabs, defaultTab, onChange, className = "" }: TabsProps) 
           key={active}
           role="tabpanel"
           className={[
-            "text-[15px] text-black leading-relaxed",
+            "text-[15px] text-ink leading-relaxed",
             direction === "right" ? "animate-tab-slide-right" : "animate-tab-slide-left",
           ].join(" ")}
         >

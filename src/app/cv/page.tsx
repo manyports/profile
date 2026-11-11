@@ -1,5 +1,6 @@
 import type { Metadata } from "next"
-import Link from "next/link"
+import { Geist_Mono } from "next/font/google"
+import { Breadcrumb, ButtonGroup } from "@blurrow/ui"
 import { data } from "@/data"
 import { cvContent, pdfFileName, type Link as CVLink } from "./content"
 
@@ -8,8 +9,9 @@ export const metadata: Metadata = {
   description: `${data.cv.title} · ${data.personal.location}`,
 }
 
+// the cv is a printed sheet that mirrors the pdf; it keeps its own mono for dates and stacks
+const geistMono = Geist_Mono({ subsets: ["latin"], variable: "--font-geist-mono" })
 const mono = "font-[family-name:var(--font-geist-mono)]"
-const control = `${mono} text-xs text-[#999] hover:text-black transition-colors`
 const when = `${mono} text-[10.5px] text-[#777] shrink-0 tabular-nums`
 const ink = "text-[#111]"
 
@@ -50,17 +52,17 @@ export default function CVPage() {
   const cv = cvContent()
 
   return (
-    <main className="min-h-svh bg-[#f4f4f4] text-black px-4 py-6 sm:py-10">
-      <nav className="mx-auto max-w-[210mm] flex items-center justify-between h-10 mb-4">
-        <Link href="/" className={control}>
-          ← {data.personal.nickname}
-        </Link>
-        <a href="/cv/pdf" download={pdfFileName} className={control}>
-          download pdf ↓
-        </a>
+    <main className={`${geistMono.variable} min-h-svh bg-page text-ink px-4 py-6 sm:py-10`}>
+      <nav className="mx-auto max-w-[210mm] flex items-center justify-between mb-5">
+        <Breadcrumb items={[{ label: data.personal.nickname, href: "/" }, { label: "cv" }]} />
+        {/* the route answers with Content-Disposition: attachment, so this link downloads */}
+        <ButtonGroup
+          label="cv actions"
+          items={[{ label: `download ${pdfFileName}`, content: "download pdf ↓", href: "/cv/pdf", wide: true }]}
+        />
       </nav>
 
-      <article className="mx-auto max-w-[210mm] bg-white shadow-[0_1px_3px_rgba(0,0,0,0.08),0_12px_40px_rgba(0,0,0,0.06)] px-5 py-8 sm:px-[15mm] sm:py-[13mm] text-[13px] leading-[1.55] text-[#2b2b2b]">
+      <article className="mx-auto max-w-[210mm] bg-white shadow-[var(--card-shadow)] px-5 py-8 sm:px-[15mm] sm:py-[13mm] text-[13px] leading-[1.55] text-[#2b2b2b]">
         <header className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4">
           <div>
             <h1 className={`text-[30px] font-semibold tracking-[-0.035em] leading-none ${ink}`}>{cv.name}</h1>

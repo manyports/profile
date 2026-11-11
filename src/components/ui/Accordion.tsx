@@ -46,7 +46,7 @@ export function Accordion({ items, allowMultiple = false, className }: Accordion
   );
 
   return (
-    <div className={["border-t border-black", className].filter(Boolean).join(" ")}>
+    <div className={["border-t border-line-strong", className].filter(Boolean).join(" ")}>
       {items.map((item) => {
         const isOpen = openKeys.has(item.key);
 
@@ -56,7 +56,7 @@ export function Accordion({ items, allowMultiple = false, className }: Accordion
               type="button"
               onClick={() => toggle(item.key)}
               aria-expanded={isOpen}
-              className={[rowClass, "cursor-pointer", isOpen ? "border-black" : ""].join(" ")}
+              className={[rowClass, "cursor-pointer", ""].join(" ")}
             >
               <RowContent
                 index={item.index}
@@ -69,13 +69,13 @@ export function Accordion({ items, allowMultiple = false, className }: Accordion
                     <span
                       className={[
                         "absolute inset-x-0 top-1/2 h-px transition-colors duration-500",
-                        isOpen ? "bg-white" : "bg-black group-hover:bg-white group-focus-visible:bg-white",
+                        "bg-ink",
                       ].join(" ")}
                     />
                     <span
                       className={[
                         "absolute inset-y-0 left-1/2 w-px transition-colors duration-500",
-                        isOpen ? "bg-white" : "bg-black group-hover:bg-white group-focus-visible:bg-white",
+                        "bg-ink",
                       ].join(" ")}
                       style={{
                         transition: "transform 400ms cubic-bezier(0.76, 0, 0.24, 1), background-color 500ms",
@@ -97,7 +97,7 @@ export function Accordion({ items, allowMultiple = false, className }: Accordion
               <div className="overflow-hidden">
                 <div
                   className={[
-                    "px-3 py-6 border-b border-[#e5e5e5] text-[15px] text-[#555] leading-relaxed",
+                    "px-3 py-6 border-b border-line-strong text-[15px] text-ink-body leading-relaxed",
                     item.index !== undefined ? "pl-[3.75rem]" : "",
                   ].join(" ")}
                   style={{
@@ -106,7 +106,7 @@ export function Accordion({ items, allowMultiple = false, className }: Accordion
                     transform: isOpen ? "translateY(0)" : "translateY(-6px)",
                   }}
                 >
-                  <div className="max-w-lg">{item.content}</div>
+                  <div className="max-w-lg lowercase">{item.content}</div>
                 </div>
               </div>
             </div>

@@ -7,6 +7,7 @@ import { data } from "@/data"
 import { staggerVariants } from "@/components/reveal"
 import { LandingTile, CvTile, type Offset } from "@/components/landing-tile"
 import { WorkPage, AboutPage, PhotosPage, ContactPage } from "@/components/pages"
+import { PageIntro } from "@/components/pages/intros"
 
 const tiles: { id: Page; label: string }[] = [
   { id: "projects", label: "projects" },
@@ -220,8 +221,7 @@ export default function ClientApp() {
   ]
 
   return (
-    <main className="min-h-svh bg-white text-black flex items-center justify-center px-6 py-16">
-      <div aria-hidden className="grain" />
+    <main className="min-h-svh bg-page text-ink flex items-center justify-center px-6 py-16 md:px-10">
       {phase === "intro" ? (
         <div className="fixed inset-0 flex items-center justify-center">
           <motion.span
@@ -233,8 +233,19 @@ export default function ClientApp() {
           </motion.span>
         </div>
       ) : (
-        <div className="flex flex-col items-start gap-8 w-[min(84vw,26rem)]">
-          <h1 className="flex items-start gap-2 text-5xl md:text-6xl font-medium tracking-[-0.05em] leading-none">
+        // words on the left, the tiles on the right; on a phone: name, tiles, then the details
+        <div className="grid w-full max-w-[58rem] gap-10 md:grid-cols-[minmax(0,1fr)_minmax(0,25rem)] md:items-stretch md:gap-x-20 md:gap-y-0">
+          {/* on desktop the words span the tiles' height: the greeting meets the cv tile's top, the details its last row's bottom */}
+          <div className="md:col-start-1 md:row-start-1 md:self-start">
+          <motion.p
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.8, ease, delay: 0.4 + lag }}
+            className="mb-3 text-[15px] leading-none text-ink-muted"
+          >
+            hey, i&apos;m
+          </motion.p>
+          <h1 className="flex items-start gap-2 text-6xl md:text-7xl font-medium tracking-[-0.05em] leading-none">
             <motion.span
               layoutId="name"
               transition={{ layout: { duration: 1, ease: inOut } }}
@@ -246,13 +257,23 @@ export default function ClientApp() {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ duration: 0.8, ease, delay: 0.5 + lag }}
-              className="text-sm tracking-normal text-[#999] font-[family-name:var(--font-geist-mono)] top-0 mt-1"
+              className="text-sm tracking-normal text-ink-muted tabular-nums top-0 mt-1"
             >
               18
             </motion.sup>
           </h1>
+          <motion.p
+            initial={{ opacity: 0, y: 8 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, ease, delay: 0.6 + lag }}
+            className="mt-6 max-w-[34ch] text-pretty text-[17px] leading-relaxed text-ink-body"
+          >
+            i make websites that are simple, fast, and pleasant to use. i care about the details: the spacing, the transitions, how
+            something feels when you click it.
+          </motion.p>
+          </div>
 
-          <div className="grid grid-cols-2 gap-2.5 w-full">
+          <div className="grid grid-cols-2 gap-2.5 w-full md:col-start-2 md:row-span-2 md:row-start-1">
             <CvTile
               onHoverChange={(on) => hoverTile(CV, on)}
               offset={offsetOf(CV)}
@@ -287,7 +308,7 @@ export default function ClientApp() {
             initial="hidden"
             animate="shown"
             variants={{ hidden: {}, shown: { transition: { staggerChildren: 0.06, delayChildren: 0.75 + lag } } }}
-            className="grid grid-cols-2 gap-x-2.5 gap-y-4 w-full text-[13px] leading-snug -mt-3"
+            className="grid grid-cols-2 gap-x-2.5 gap-y-4 w-full max-w-[26rem] text-[13px] leading-snug border-t border-line-strong pt-6 md:col-start-1 md:row-start-2 md:self-end"
           >
             {details.map(({ label, value }) => (
               <motion.div
@@ -298,7 +319,7 @@ export default function ClientApp() {
                 }}
                 className="min-w-0"
               >
-                <dt className="text-[#999]">{label}</dt>
+                <dt className="text-ink-muted">{label}</dt>
                 <dd>{value}</dd>
               </motion.div>
             ))}
@@ -314,7 +335,7 @@ export default function ClientApp() {
             transition={{ layout: morph }}
             // the exiting panel can also finish a layout animation while closing; only reveal an open one
             onLayoutAnimationComplete={() => activeRef.current && setRevealed(true)}
-            className="fixed inset-0 z-50 bg-black"
+            className="fixed inset-0 z-50 bg-ink"
           />
         )}
       </AnimatePresence>
@@ -324,7 +345,7 @@ export default function ClientApp() {
           <motion.div
             key={`label-${active}`}
             exit={{ opacity: 0, transition: { duration: 0.3 } }}
-            className="fixed inset-0 z-[55] flex items-center justify-center pointer-events-none text-white text-5xl md:text-7xl font-medium tracking-[-0.05em]"
+            className="fixed inset-0 z-[55] flex items-center justify-center pointer-events-none text-ink-inverse text-5xl md:text-7xl font-medium tracking-[-0.05em]"
           >
             <MaskedText text={activeLabel} delay={0.35} stagger={0.03} />
           </motion.div>
@@ -347,25 +368,33 @@ export default function ClientApp() {
             onAnimationComplete={() => revealedRef.current && setWiped(true)}
             exit={{ clipPath: wiped ? [wipeIn, wipeOut] : wipeOut, transition: { duration: 0.6, ease: inOut } }}
             transition={{ duration: 0.7, ease: inOut, delay: 0.15 }}
-            className="fixed inset-0 z-[60] bg-white overflow-y-auto overscroll-contain [-webkit-overflow-scrolling:touch]"
+            className="fixed inset-0 z-[60] bg-page overflow-y-auto overscroll-contain [-webkit-overflow-scrolling:touch]"
           >
             <motion.div
               variants={staggerVariants}
               initial="hidden"
               animate="shown"
-              className="max-w-2xl mx-auto px-6 md:px-12 pt-8 pb-32"
+              className="page-frame px-6 md:px-10 pt-8 pb-32"
             >
               <button
                 onClick={goHome}
-                className="group flex items-center gap-2 h-10 text-sm text-[#999] hover:text-black transition-colors cursor-pointer"
+                className="group flex items-center gap-2 h-10 text-sm text-ink-muted hover:text-ink transition-colors cursor-pointer"
               >
                 <span className="inline-block transition-transform duration-300 group-hover:-translate-x-1">←</span>
                 {nickname}
               </button>
-              <h1 className="mt-16 mb-20 text-5xl md:text-7xl font-medium tracking-[-0.05em] leading-none">
-                <MaskedText text={activeLabel} delay={0.55} stagger={0.03} />
-              </h1>
-              <ActivePage />
+              {/* like the home page: words on the left (held in view as you scroll), the page itself on the right */}
+              <div className="page-grid">
+                <aside className="page-aside">
+                  <h1 className="text-5xl font-medium tracking-[-0.05em] leading-none text-ink">
+                    <MaskedText text={activeLabel} delay={0.55} stagger={0.03} />
+                  </h1>
+                  <PageIntro page={active!} />
+                </aside>
+                <div className="min-w-0">
+                  <ActivePage />
+                </div>
+              </div>
             </motion.div>
           </motion.div>
         )}
